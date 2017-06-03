@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Labels-->
+    <style name="Label" >
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="Label.Build" parent="Label">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">.86</item>
+        <item name="android:textColor">@color/smallTextColor</item>
+        <item name="android:textSize">8sp</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+
+    <style name="Label.Header" parent="Label">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">.86</item>
+        <item name="android:textColor">@color/smallTextColor</item>
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="Label.InputLabel" parent="Label">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">.86</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--Inputs-->
+    <style name="InputField" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textColor">@color/smallTextColor</item>
+    </style>
+
+    <style name="InputField.Credentials" parent="InputField">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:layout_marginLeft">64dp</item>
+        <item name="android:layout_marginRight">64dp</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+    </style>
+
+    <style name="InputField.Credentials.Name">
+        <item name="android:inputType">textPersonName</item>
+    </style>
+
+    <style name="InputField.Credentials.Email" parent="InputField.Credentials">
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="InputField.Credentials.Password" parent="InputField.Credentials">
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <!--Inputs-->
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="Button.Flat" parent="Button">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+
+</resources>

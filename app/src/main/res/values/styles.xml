@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="KeepTheme" parent="Theme.AppCompat"/>
+
+    <style name="KeepTheme.Base" parent="KeepTheme" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <!--Change this color to change the title color in actionBar-->
+        <item name="android:textColorPrimary">@android:color/black</item>
+
+        <!-- To change the popup menu and app text color  -->
+        <item name="android:textColor">@android:color/black</item>
+
+        <!-- To change the background of options menu-->
+        <item name="android:itemBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="KeepTheme.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+    </style>
+
+</resources>
