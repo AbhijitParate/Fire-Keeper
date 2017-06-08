@@ -11,7 +11,7 @@ import com.github.abhijitpparate.keeps.data.database.DatabaseInjector;
 import com.github.abhijitpparate.keeps.data.database.DatabaseSource;
 import com.github.abhijitpparate.keeps.data.database.Profile;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerInjector;
-import com.github.abhijitpparate.keeps.scheduler.DevelopmentSchedulerProvider;
+import com.github.abhijitpparate.keeps.scheduler.SchedulerProvider;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableCompletableObserver;
@@ -19,7 +19,7 @@ import io.reactivex.observers.DisposableMaybeObserver;
 
 public class RegistrationPresenter implements RegistrationContract.Presenter {
 
-    private DevelopmentSchedulerProvider schedulerProvider;
+    private SchedulerProvider schedulerProvider;
     private AuthSource authSource;
     private DatabaseSource databaseSource;
     private CompositeDisposable disposable;

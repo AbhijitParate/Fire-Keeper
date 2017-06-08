@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CheckListView" >
+        <attr name="labelText" format="string" />
+        <attr name="checklistHintColor" format="color" />
+        <attr name="checklistTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="CheckList" >
+        <attr name="text" format="string" />
+        <attr name="hint" format="string" />
+        <attr name="hintColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="checked" format="boolean" />
+        <attr name="enabled" format="boolean" />
+    </declare-styleable>
+
+</resources>

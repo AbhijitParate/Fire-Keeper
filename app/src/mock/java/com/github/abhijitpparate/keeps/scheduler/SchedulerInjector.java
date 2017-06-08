@@ -3,16 +3,16 @@ package com.github.abhijitpparate.keeps.scheduler;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
-public class SchedulerInjecter implements SchedulerProvider {
+public class SchedulerInjector implements SchedulerProvider {
 
-    private static SchedulerInjecter INSTANCE;
+    private static SchedulerInjector INSTANCE;
 
-    public static SchedulerInjecter getScheduler() {
-        if (INSTANCE == null) INSTANCE = new SchedulerInjecter();
+    public static SchedulerInjector getScheduler() {
+        if (INSTANCE == null) INSTANCE = new SchedulerInjector();
         return INSTANCE;
     }
 
-    private SchedulerInjecter() {}
+    private SchedulerInjector() {}
 
     @Override
     public Scheduler computation() {

@@ -2,6 +2,7 @@ package com.github.abhijitpparate.keeps.data.auth;
 
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +20,8 @@ import io.reactivex.MaybeEmitter;
 import io.reactivex.MaybeOnSubscribe;
 
 public class FirebaseAuthService implements AuthSource {
+
+    public static final String TAG = "FirebaseAuthService";
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener listener;
@@ -110,13 +113,16 @@ public class FirebaseAuthService implements AuthSource {
 
     @Override
     public Maybe<User> getUser() {
+        Log.d(TAG, "getUser: ");
         return Maybe.create(new MaybeOnSubscribe<User>() {
             @Override
             public void subscribe(@NonNull final MaybeEmitter<User> e) throws Exception {
+                Log.d(TAG, "subscribe: ");
                 getAuth().removeAuthStateListener(listener);
                 listener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@android.support.annotation.NonNull FirebaseAuth firebaseAuth) {
+                        Log.d(TAG, "onAuthStateChanged: ");
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         auth.removeAuthStateListener(listener);
                         if (firebaseUser != null){

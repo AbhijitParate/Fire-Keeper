@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@color/colorPrimary"
+    tools:background="@color/colorBackground"
     tools:context="com.github.abhijitpparate.keeps.screen.login.fragments.RegistrationFragment">
 
     <TextView

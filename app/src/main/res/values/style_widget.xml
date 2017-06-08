@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--Labels-->
     <style name="Label" >
         <item name="android:layout_marginStart">16dp</item>
@@ -9,7 +9,7 @@
     <style name="Label.Build" parent="Label">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:alpha">.86</item>
-        <item name="android:textColor">@color/smallTextColor</item>
+        <item name="android:textColor">@color/normalTextColor</item>
         <item name="android:textSize">8sp</item>
         <item name="android:gravity">end</item>
         <item name="android:layout_marginEnd">0dp</item>
@@ -18,14 +18,14 @@
     <style name="Label.Header" parent="Label">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:alpha">.86</item>
-        <item name="android:textColor">@color/smallTextColor</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">48sp</item>
     </style>
 
     <style name="Label.InputLabel" parent="Label">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:alpha">.86</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -33,7 +33,8 @@
     <style name="InputField" parent="Widget.AppCompat.EditText">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
-        <item name="android:textColor">@color/smallTextColor</item>
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:colorAccent" tools:targetApi="lollipop">@color/colorPrimary</item>
     </style>
 
     <style name="InputField.Credentials" parent="InputField">
@@ -42,7 +43,8 @@
         <item name="android:layout_marginLeft">64dp</item>
         <item name="android:layout_marginRight">64dp</item>
         <item name="android:inputType">textCapWords</item>
-        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="android:textColorHint">@color/inputHintColor</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/colorAccent</item>
     </style>
 
     <style name="InputField.Credentials.Name">
@@ -57,18 +59,80 @@
         <item name="android:inputType">textPassword</item>
     </style>
 
-    <!--Inputs-->
+    <!--Button-->
     <style name="Button" parent="Widget.AppCompat.Button">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
     </style>
 
     <style name="Button.Flat" parent="Button">
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">gravity</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_marginTop">8dp</item>
     </style>
+
+    <style name="Button.Action" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:scaleType">centerInside</item>
+        <!--<item name="android:background">@drawable/new_note_background</item>-->
+    </style>
+
+    <!--CardView-->
+    <style name="CardView.Notes" parent="CardView">
+        <item name="cardBackgroundColor">@color/colorBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="Notes" parent="CardView.Notes"/>
+
+    <style name="Notes.Title" parent="Notes" >
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxHeight">24dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Notes.Body" parent="Notes" >
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:maxHeight">128dp</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Notes.Date" parent="Notes" >
+        <item name="android:textColor">@color/smallTextColor</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:clickable">false</item>
+    </style>
+
 
 
 </resources>

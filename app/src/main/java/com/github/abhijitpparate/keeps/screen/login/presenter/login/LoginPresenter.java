@@ -9,7 +9,7 @@ import com.github.abhijitpparate.keeps.data.auth.AuthSource;
 import com.github.abhijitpparate.keeps.data.auth.Credentials;
 import com.github.abhijitpparate.keeps.data.auth.User;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerInjector;
-import com.github.abhijitpparate.keeps.scheduler.DevelopmentSchedulerProvider;
+import com.github.abhijitpparate.keeps.scheduler.SchedulerProvider;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,7 +19,7 @@ import io.reactivex.observers.DisposableMaybeObserver;
 public class LoginPresenter implements LoginContract.Presenter {
 
     private AuthSource authSource;
-    private DevelopmentSchedulerProvider schedulerProvider;
+    private SchedulerProvider schedulerProvider;
 
     private CompositeDisposable disposable;
 

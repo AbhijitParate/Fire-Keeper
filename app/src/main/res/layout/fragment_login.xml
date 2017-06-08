@@ -4,7 +4,7 @@
     android:id="@+id/root_login_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@color/colorPrimary"
+    tools:background="@color/colorBackground"
     tools:context="com.github.abhijitpparate.keeps.screen.login.fragments.LoginFragment">
 
     <TextView
@@ -83,7 +83,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/edtPassword"
-        android:gravity="center_horizontal"
         android:text="Login"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -96,8 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/edtPassword"
-        android:gravity="center_horizontal"
-        android:text="Create Account"
+        android:text="Create Free Account"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
