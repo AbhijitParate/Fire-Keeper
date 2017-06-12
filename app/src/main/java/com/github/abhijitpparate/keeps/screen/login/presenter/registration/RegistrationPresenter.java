@@ -12,6 +12,7 @@ import com.github.abhijitpparate.keeps.data.database.DatabaseSource;
 import com.github.abhijitpparate.keeps.data.database.Profile;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerInjector;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerProvider;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableCompletableObserver;
@@ -94,14 +95,14 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribeWith(
-                            new DisposableMaybeObserver<User>() {
+                            new DisposableMaybeObserver<FirebaseUser>() {
                                 @Override
                                 public void onComplete() {
                                     view.showProgressIndicator(false);
                                 }
 
                                 @Override
-                                public void onSuccess(User user) {
+                                public void onSuccess(FirebaseUser user) {
                                     addUserProfileToDatabase(user.getUid(), user.getEmail());
                                 }
 

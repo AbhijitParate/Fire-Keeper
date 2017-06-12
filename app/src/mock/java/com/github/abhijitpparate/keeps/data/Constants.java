@@ -1,4 +1,4 @@
-package com.github.abhijitpparate.keeps.screen;
+package com.github.abhijitpparate.keeps.data;
 
 
 import com.github.abhijitpparate.keeps.data.database.Note;

@@ -4,8 +4,9 @@ public class User {
 
     private String uid, email, name;
 
-    public User(String uid, String email) {
+    public User(String uid, String name, String email) {
         this.uid = uid;
+        this.name = name;
         this.email = email;
     }
 

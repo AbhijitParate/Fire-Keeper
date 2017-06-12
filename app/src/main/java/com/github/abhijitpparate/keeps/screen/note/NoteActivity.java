@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,16 +24,16 @@ import com.github.abhijitpparate.keeps.screen.home.HomeActivity;
 import com.github.abhijitpparate.keeps.screen.home.presenter.HomeContract;
 import com.github.abhijitpparate.keeps.screen.note.presenter.NoteContract;
 import com.github.abhijitpparate.keeps.screen.note.presenter.NotePresenter;
-import com.github.abhijitpparate.keeps.utils.Utils;
 
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class NoteActivity extends AppCompatActivity implements NoteContract.View {
+
+    public static final String TAG = "NoteActivity";
 
     @BindView(R.id.edtTitle)
     TextView tvNoteTitle;
@@ -57,7 +60,10 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     ImageButton btnNewImageNote;
 
     @BindView(R.id.btnOptions)
-    ImageButton options;
+    ToggleButton options;
+
+    @BindView(R.id.optionsPanel)
+    View optionsPanel;
 
     NoteContract.Presenter presenter;
 
@@ -65,6 +71,14 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     String noteId;
 
     private Note currentNote;
+
+    boolean isOptionsOpen = false;
+
+    Animation slideDown;
+
+    Animation slideUp;
+
+    Animation.AnimationListener animationListener;
 
     public static Intent getIntent(HomeActivity homeActivity, HomeContract.NoteType noteType) {
         Intent intent = new Intent(homeActivity, NoteActivity.class);
@@ -83,8 +97,13 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
-        noteType = getIntent().getStringExtra("type");
-        noteId = getIntent().getStringExtra("noteId");
+        if(getIntent().hasExtra("type")){
+            noteType = getIntent().getStringExtra("type");
+        }
+
+        if(getIntent().hasExtra("noteId")) {
+            noteId = getIntent().getStringExtra("noteId");
+        }
 
         ButterKnife.bind(this);
 
@@ -101,6 +120,50 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
                 presenter.onChecklistClick(isChecked);
             }
         });
+
+        setOptionsAnimations();
+    }
+
+    private void setOptionsAnimations() {
+        slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+        slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+
+        slideDown.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                optionsPanel.setVisibility(View.GONE);
+                isOptionsOpen = !isOptionsOpen;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        slideUp.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                optionsPanel.setVisibility(View.VISIBLE);
+                isOptionsOpen = !isOptionsOpen;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
     }
 
     @Override
@@ -153,12 +216,12 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
 
     @Override
     public void setNoteTitle(String title) {
-
+        this.tvNoteTitle.setText(title);
     }
 
     @Override
     public void setNoteBody(String body) {
-
+        this.tvNoteBody.setText(body);
     }
 
     @Override
@@ -231,6 +294,11 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
 
     @OnClick(R.id.btnOptions)
     void onOptionClick(View view){
-
+        Log.d(TAG, "onOptionClick: ");
+        if (isOptionsOpen){
+            optionsPanel.startAnimation(slideDown);
+        } else {
+            optionsPanel.startAnimation(slideUp);
+        }
     }
 }

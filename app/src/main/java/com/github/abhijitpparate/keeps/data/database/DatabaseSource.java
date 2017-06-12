@@ -16,7 +16,7 @@ public interface DatabaseSource {
 
     Maybe<Note> getNoteFromId(String uid, String noteId);
 
-    Completable createNewNote(User currentUser, Note note);
+    Completable createNewNote(String uid, Note note);
 
     Completable deleteProfile(String uid);
     Completable updateProfile(Profile profile);

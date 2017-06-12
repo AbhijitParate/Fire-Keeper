@@ -1,17 +1,15 @@
 package com.github.abhijitpparate.keeps.screen.note.presenter;
 
 
-import android.util.Log;
-
 import com.github.abhijitpparate.keeps.data.auth.AuthInjector;
 import com.github.abhijitpparate.keeps.data.auth.AuthSource;
-import com.github.abhijitpparate.keeps.data.auth.User;
 import com.github.abhijitpparate.keeps.data.database.DatabaseInjector;
 import com.github.abhijitpparate.keeps.data.database.DatabaseSource;
 import com.github.abhijitpparate.keeps.data.database.Note;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerInjector;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerProvider;
 import com.github.abhijitpparate.keeps.utils.Utils;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -26,7 +24,7 @@ public class NotePresenter implements NoteContract.Presenter {
     private AuthSource authSource;
     private DatabaseSource databaseSource;
 
-    private User currentUser;
+    private FirebaseUser currentUser;
 
     private NoteContract.View view;
 
@@ -50,7 +48,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
         disposable.add(
             databaseSource
-                    .createNewNote(currentUser, note)
+                    .createNewNote(currentUser.getUid(), note)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribeWith(
@@ -129,9 +127,9 @@ public class NotePresenter implements NoteContract.Presenter {
                         .getUser()
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
-                        .subscribeWith(new DisposableMaybeObserver<User>() {
+                        .subscribeWith(new DisposableMaybeObserver<FirebaseUser>() {
                             @Override
-                            public void onSuccess(@NonNull User user) {
+                            public void onSuccess(@NonNull FirebaseUser user) {
                                 currentUser = user;
 //                                Log.d(TAG, "onSuccess: ");
                                 view.loadNoteIfAvailable();

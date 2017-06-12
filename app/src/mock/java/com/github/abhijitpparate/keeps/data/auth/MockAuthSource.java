@@ -1,6 +1,8 @@
 package com.github.abhijitpparate.keeps.data.auth;
 
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
@@ -86,5 +88,10 @@ public class MockAuthSource implements AuthSource {
     @Override
     public void setAllowRegistration(boolean bool) {
         this.allowRegistration = bool;
+    }
+
+    @Override
+    public Maybe<User> attemptGoogleLogin(GoogleSignInAccount account) {
+        return null;
     }
 }

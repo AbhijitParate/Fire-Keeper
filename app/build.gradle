@@ -78,14 +78,19 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.9'
-    compile 'com.google.firebase:firebase-auth:10.0.1'
-    compile 'com.google.firebase:firebase-database:10.0.1'
-    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-auth:10.2.6'
+    compile 'com.google.firebase:firebase-database:10.2.6'
+    compile 'com.google.firebase:firebase-core:10.2.6'
+    compile 'com.google.android.gms:play-services-auth:10.2.6'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.github.abhijitpparate.checklistview:checklistview:1.1.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.23.0'
+    compile('com.twitter.sdk.android:twitter:3.0.0@aar') {
+        transitive = true
+    }
+//    compile project(':checklistview')
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
-    compile project(':checklistview')
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -3,5 +3,5 @@
     <!-- When selected, use grey -->
     <item android:state_checked="true" android:drawable="@drawable/ic_checklist_enabled"/>
     <!-- When not selected, use white-->
-    <item android:state_checked="false" android:drawable="@drawable/ic_checklist"/>
+    <item android:state_checked="false" android:drawable="@drawable/ic_checklist_disabled"/>
 </selector>

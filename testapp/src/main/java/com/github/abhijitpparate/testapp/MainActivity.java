@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkListView = (CheckListView) findViewById(R.id.checkListView);
+//        checkListView = (CheckListView) findViewById(R.id.checkListView);
+
+
     }
 }

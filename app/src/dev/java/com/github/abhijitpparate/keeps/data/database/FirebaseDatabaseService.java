@@ -170,13 +170,13 @@ public class FirebaseDatabaseService implements DatabaseSource {
     }
 
     @Override
-    public Completable createNewNote(final User currentUser, final Note note) {
+    public Completable createNewNote(final String uid, final Note note) {
         return Completable.create(
                 new CompletableOnSubscribe() {
                     @Override
                     public void subscribe(@io.reactivex.annotations.NonNull final CompletableEmitter e) throws Exception {
                         final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        final DatabaseReference idRef = rootRef.child(USERS).child(currentUser.getUid()).child(NOTES).child(note.getNoteId());
+                        final DatabaseReference idRef = rootRef.child(USERS).child(uid).child(NOTES).child(note.getNoteId());
                         idRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {

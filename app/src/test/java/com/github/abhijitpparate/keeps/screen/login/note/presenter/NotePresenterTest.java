@@ -1,6 +1,6 @@
 package com.github.abhijitpparate.keeps.screen.login.note.presenter;
 
-import com.github.abhijitpparate.keeps.screen.Constants;
+import com.github.abhijitpparate.keeps.data.Constants;
 import com.github.abhijitpparate.keeps.data.database.Note;
 import com.github.abhijitpparate.keeps.screen.note.presenter.NoteContract;
 import com.github.abhijitpparate.keeps.screen.note.presenter.NotePresenter;

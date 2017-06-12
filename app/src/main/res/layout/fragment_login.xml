@@ -39,9 +39,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvEmail"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
         android:gravity="center_horizontal"
         android:hint="example@email.com"
         android:inputType="textEmailAddress"
@@ -67,9 +64,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvPassword"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
         android:gravity="center_horizontal"
         android:hint="Password"
         android:inputType="textPassword"
@@ -84,9 +78,69 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/edtPassword"
         android:text="Login"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btnLoginGoogle"
+        android:text="Sign In with google"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="32dp"
+        style="@style/Button.Flat.Google"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnLoginFacebook"
+        android:layout_marginTop="0dp" />
+
+    <Button
+        android:id="@+id/btnLoginFacebook"
+        android:text="Sign In with Facebook"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        style="@style/Button.Flat.Facebook"
+        app:layout_constraintRight_toLeftOf="@+id/btnLoginTwitter"
+        app:layout_constraintLeft_toRightOf="@+id/btnLoginGoogle"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        app:layout_constraintHorizontal_bias="0.508" />
+
+    <Button
+        android:id="@+id/btnLoginTwitter"
+        android:text="Sign In with Twitter"
+        style="@style/Button.Flat.Twitter"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+        app:layout_constraintTop_toTopOf="@+id/btnLoginFacebook" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btnLoginFacebookGone"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/btnLoginTwitterGone"
+        style="@style/Button.Flat"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="361dp"
+        tools:layout_editor_absoluteY="522dp" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -96,9 +150,12 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/edtPassword"
         android:text="Create Free Account"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnLoginFacebook"
+        android:layout_marginRight="0dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -111,5 +168,41 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="20dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline2"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="20dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline3"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="20dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline4"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="20dp"
+        tools:layout_editor_absoluteX="0dp" />
 
 </android.support.constraint.ConstraintLayout>
