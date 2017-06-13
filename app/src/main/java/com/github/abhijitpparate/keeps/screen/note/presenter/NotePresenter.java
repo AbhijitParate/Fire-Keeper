@@ -14,14 +14,37 @@ import com.github.abhijitpparate.keeps.scheduler.SchedulerInjector;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerProvider;
 import com.github.abhijitpparate.keeps.utils.Utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableMaybeObserver;
 
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.BLUE;
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.DEFAULT;
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.GREEN;
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.ORANGE;
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.RED;
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.WHITE;
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.YELLOW;
+import static com.github.abhijitpparate.keeps.utils.Utils.getNoteColor;
+
 public class NotePresenter implements NoteContract.Presenter {
 
     public static final String TAG = "NotePresenter";
+
+    public static Map<String, Integer> colorMap = new HashMap<>();
+    static {
+        colorMap.put(DEFAULT,   R.color.colorBackground);
+        colorMap.put(WHITE,     android.R.color.white);
+        colorMap.put(RED,       android.R.color.holo_red_light);
+        colorMap.put(GREEN,     android.R.color.holo_green_light);
+        colorMap.put(YELLOW,    android.R.color.holo_orange_light);
+        colorMap.put(BLUE,      android.R.color.holo_blue_bright);
+        colorMap.put(ORANGE,    android.R.color.holo_orange_dark);
+    }
 
     private SchedulerProvider schedulerProvider;
     private CompositeDisposable disposable;
@@ -30,6 +53,7 @@ public class NotePresenter implements NoteContract.Presenter {
     private DatabaseSource databaseSource;
 
     private User currentUser;
+    private Note currentNote;
 
     private NoteContract.View view;
 
@@ -48,19 +72,16 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void onSaveClick() {
-//        Log.d(TAG, "onSaveClick: " + currentUser.getEmail());
-        Note note = generateNote();
-
+        assembleNote();
         disposable.add(
             databaseSource
-                    .createNewNote(currentUser.getUid(), note)
+                    .createOrUpdateNote(currentUser.getUid(), currentNote)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribeWith(
                             new DisposableCompletableObserver() {
                                 @Override
                                 public void onComplete() {
-
                                     view.showHomeScreen();
                                 }
 
@@ -73,18 +94,25 @@ public class NotePresenter implements NoteContract.Presenter {
         );
     }
 
-    private Note generateNote() {
-        Note note = new Note();
-        note.setTitle(view.getNoteTitle());
-        note.setBody(view.getNoteBody());
-        note.setChecklist(view.getCheckList());
-        return note;
+    private Note assembleNote() {
+        if (currentNote == null) currentNote = new Note();
+
+        if (!currentNote.getNoteId().equals(view.getNoteId())) {
+            currentNote = new Note();
+        }
+
+        currentNote.setTitle(view.getNoteTitle());
+        currentNote.setBody(view.getNoteBody());
+        currentNote.setChecklist(view.getCheckList());
+        currentNote.setColor(view.getNoteColor());
+        return currentNote;
     }
 
     @Override
     public void loadNote(final String noteId) {
 //        Log.d(TAG, "loadNote: ");
         view.makeToast("Loading note...");
+        view.showProgressbar(true);
         disposable.add(
                 databaseSource
                         .getNoteFromId(currentUser.getUid(), noteId)
@@ -100,15 +128,18 @@ public class NotePresenter implements NoteContract.Presenter {
 
                                     @Override
                                     public void onSuccess(@NonNull Note note) {
+                                        currentNote = note;
                                         view.setNote(note);
                                         view.setNoteTitle(note.getTitle());
                                         if (note.getBody() != null && !note.getBody().isEmpty()){
                                             view.setNoteBody(note.getBody());
-                                        } else if (note.getChecklist() != null && !note.getChecklist().isEmpty()){
+                                        } else if (note.getChecklist() != null && !note.getChecklist().equals("[]")){
                                             view.setNoteChecklist(Utils.parseNoteChecklist(note.getChecklist()));
                                             view.switchToChecklist();
                                         }
+                                        view.setNoteColor(getNoteColor(note.getColor()), note.getColor());
                                         view.makeToast("Note retrieved successfully");
+                                        view.showProgressbar(false);
                                     }
 
                                     @Override
@@ -227,25 +258,25 @@ public class NotePresenter implements NoteContract.Presenter {
         Log.d(TAG, "onColorSelected: " + color);
         switch (color){
             case WHITE:
-                view.setNoteColor(android.R.color.white);
+                view.setNoteColor(android.R.color.white, WHITE);
                 break;
             case RED:
-                view.setNoteColor(android.R.color.holo_red_light);
+                view.setNoteColor(android.R.color.holo_red_light, RED);
                 break;
             case GREEN:
-                view.setNoteColor(android.R.color.holo_green_light);
+                view.setNoteColor(android.R.color.holo_green_light, GREEN);
                 break;
             case YELLOW:
-                view.setNoteColor(android.R.color.holo_orange_light);
+                view.setNoteColor(android.R.color.holo_orange_light, YELLOW);
                 break;
             case BLUE:
-                view.setNoteColor(android.R.color.holo_blue_bright);
+                view.setNoteColor(android.R.color.holo_blue_bright, BLUE);
                 break;
             case ORANGE:
-                view.setNoteColor(android.R.color.holo_orange_dark);
+                view.setNoteColor(android.R.color.holo_orange_dark, ORANGE);
                 break;
             default:
-                view.setNoteColor(R.color.colorBackground);
+                view.setNoteColor(R.color.colorBackground, DEFAULT);
                 break;
         }
     }

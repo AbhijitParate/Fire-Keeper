@@ -3,7 +3,6 @@ package com.github.abhijitpparate.keeps.data.database;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.github.abhijitpparate.keeps.data.auth.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -13,7 +12,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -170,7 +168,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
     }
 
     @Override
-    public Completable createNewNote(final String uid, final Note note) {
+    public Completable createOrUpdateNote(final String uid, final Note note) {
         return Completable.create(
                 new CompletableOnSubscribe() {
                     @Override
@@ -180,21 +178,17 @@ public class FirebaseDatabaseService implements DatabaseSource {
                         idRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
-                                if (!snapshot.exists()) {
-                                    idRef.setValue(note)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        e.onComplete();
-                                                    } else {
-                                                        e.onError(task.getException());
-                                                    }
+                                idRef.setValue(note)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    e.onComplete();
+                                                } else {
+                                                    e.onError(task.getException());
                                                 }
-                                            });
-                                } else {
-                                    e.onComplete();
-                                }
+                                            }
+                                        });
                             }
 
                             @Override

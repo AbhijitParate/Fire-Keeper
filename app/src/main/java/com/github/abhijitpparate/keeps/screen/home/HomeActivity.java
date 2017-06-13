@@ -86,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
             presenter = new HomePresenter(this);
         }
 
-        notesAdapter = new NotesAdapter(new ArrayList<Note>());
+        notesAdapter = new NotesAdapter(this , new ArrayList<Note>());
         notesAdapter.setNoteClickListener(this);
 
         rvNotes.setAdapter(notesAdapter);

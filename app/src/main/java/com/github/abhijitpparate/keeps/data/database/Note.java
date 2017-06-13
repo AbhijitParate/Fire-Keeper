@@ -12,6 +12,17 @@ public class Note {
     private String body;
     private String created;
     private String checklist;
+    private String color;
+
+    public static class NoteColor {
+        public static final String DEFAULT = "DEFAULT";
+        public static final String WHITE = "WHITE";
+        public static final String RED = "RED";
+        public static final String GREEN = "GREEN";
+        public static final String YELLOW = "YELLOW";
+        public static final String BLUE = "BLUE";
+        public static final String ORANGE = "ORANGE";
+    }
 
     public Note(String title, String body) {
         this.noteId = UUID.randomUUID().toString();
@@ -63,5 +74,13 @@ public class Note {
 
     public void setChecklist(String checklist) {
         this.checklist = checklist;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

@@ -17,15 +17,17 @@ public interface NoteContract {
 
     interface View {
 
+        String getNoteId();
         String getNoteTitle();
         String getNoteBody();
         String getCheckList();
+        String getNoteColor();
 
         void setNote(Note notes);
         void setNoteTitle(String title);
         void setNoteBody(String body);
         void setNoteChecklist(List<CheckListItem> checklist);
-        void setNoteColor(@ColorRes int color);
+        void setNoteColor(@ColorRes int colorInt, String colorString);
 
         void showOptionsPanel();
         void hideOptionsPanel();
@@ -34,6 +36,7 @@ public interface NoteContract {
         void loadNoteIfAvailable();
 
         void setPresenter(NoteContract.Presenter presenter);
+        void showProgressbar(boolean bool);
         void makeToast(@StringRes int strId);
         void makeToast(String message);
 

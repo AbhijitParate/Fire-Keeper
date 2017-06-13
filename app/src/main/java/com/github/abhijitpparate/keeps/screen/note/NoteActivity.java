@@ -7,6 +7,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +38,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.WHITE;
 
 public class NoteActivity extends AppCompatActivity implements NoteContract.View {
 
@@ -92,12 +96,15 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @BindView(R.id.actionNoteColor)
     RadioGroup actionNoteColor;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     NoteContract.Presenter presenter;
 
     String noteType;
     String noteId;
 
-    private Note currentNote;
+    private Note currentNote = new Note();
 
     Animation slideDown;
 
@@ -247,6 +254,11 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     }
 
     @Override
+    public String getNoteId() {
+        return noteId;
+    }
+
+    @Override
     public String getNoteTitle() {
         return tvNoteTitle.getText().toString();
     }
@@ -259,6 +271,11 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @Override
     public String getCheckList() {
         return checkListView.getCheckListAsString();
+    }
+
+    @Override
+    public String getNoteColor() {
+        return currentNote.getColor();
     }
 
     @Override
@@ -282,15 +299,14 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     }
 
     @Override
-    public void setNoteColor(@ColorRes int color) {
+    public void setNoteColor(@ColorRes int colorInt, String colorString) {
         Log.d(TAG, "setNoteColor: ");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            clNote.setBackgroundColor(getResources().getColor(color, this.getTheme()));
-            rlNewNote.setBackgroundColor(getResources().getColor(color, this.getTheme()));
-        } else {
-            clNote.setBackgroundColor(getResources().getColor(color));
-            rlNewNote.setBackgroundColor(getResources().getColor(color));
-        }
+        int c = ResourcesCompat.getColor(getResources(), colorInt, null);
+
+        clNote.setBackgroundColor(c);
+        rlNewNote.setBackgroundColor(c);
+
+        currentNote.setColor(colorString);
     }
 
     @Override
@@ -320,6 +336,15 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @Override
     public void setPresenter(NoteContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void showProgressbar(boolean bool) {
+        if (bool) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override

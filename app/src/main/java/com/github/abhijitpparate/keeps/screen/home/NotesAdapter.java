@@ -1,5 +1,10 @@
 package com.github.abhijitpparate.keeps.screen.home;
 
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.DrawableUtils;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -11,6 +16,7 @@ import android.widget.TextView;
 
 import com.github.abhijitpparate.keeps.R;
 import com.github.abhijitpparate.keeps.data.database.Note;
+import com.github.abhijitpparate.keeps.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,14 +33,18 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.github.abhijitpparate.keeps.utils.Utils.getNoteColor;
+
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesHolder> {
 
+    private Context context;
     private List<Note> noteList;
 
     private OnNoteClickListener noteClickListener;
 
-    public NotesAdapter(List<Note> noteList) {
+    public NotesAdapter(Context context, List<Note> noteList) {
+        this.context = context;
         this.noteList = noteList;
     }
 
@@ -51,10 +61,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesHolder>
     @Override
     public void onBindViewHolder(NotesHolder holder, int position) {
         Note note = noteList.get(position);
-        holder.setTitle(note.getTitle());
-        holder.setBody(note.getBody());
-        holder.setCheckList(note.getChecklist());
-        holder.setCreated(note.getCreated());
+        holder.setNote(note);
     }
 
     @Override
@@ -71,6 +78,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesHolder>
     }
 
     class NotesHolder extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.rlNoteCard)
+        View rlNoteCard;
 
         @BindView(R.id.tvTitle)
         TextView tvTitle;
@@ -90,6 +100,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesHolder>
                     noteClickListener.onNoteClicked(noteList.get(getLayoutPosition()));
                 }
             });
+        }
+
+        void setNote(Note note) {
+            setTitle(note.getTitle());
+            setBody(note.getBody());
+            setCheckList(note.getChecklist());
+            setCreated(note.getCreated());
+            setColor(note.getColor());
         }
 
         void setTitle(String title) {
@@ -114,7 +132,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesHolder>
         }
 
         void setCheckList(String checkList){
-            Log.d("NoteAdapter", "setCheckList: " + checkList);
+            Log.d("NoteAdapter", "setCheckList: ");
             StringBuilder sb = new StringBuilder(this.tvBody.getText());
             if (checkList != null && !checkList.isEmpty()) {
                 JSONTokener j = new JSONTokener(checkList);
@@ -137,6 +155,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesHolder>
                     e.printStackTrace();
                 }
             }
+        }
+
+        public void setColor(String color) {
+            rlNoteCard.setBackgroundColor(ResourcesCompat.getColor(context.getResources(), getNoteColor(color), null));
         }
     }
 

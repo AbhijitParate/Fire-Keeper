@@ -1,7 +1,10 @@
 package com.github.abhijitpparate.keeps.utils;
 
 
+import android.util.Log;
+
 import com.github.abhijitpparate.checklistview.CheckListItem;
+import com.github.abhijitpparate.keeps.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +13,10 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.github.abhijitpparate.keeps.data.database.Note.NoteColor.DEFAULT;
+import static com.github.abhijitpparate.keeps.screen.note.presenter.NotePresenter.colorMap;
 
 public class Utils {
 
@@ -30,4 +37,21 @@ public class Utils {
         return checkListItems;
     }
 
+    public static int getNoteColor(String colorString){
+        if (colorString != null && !colorString.isEmpty()) {
+            return colorMap.containsKey(colorString) ? colorMap.get(colorString) : R.color.colorBackground;
+        }
+        return R.color.colorBackground;
+    }
+
+    public static String getNoteColorString(int colorInt){
+        if (colorMap.containsValue(colorInt)){
+            for (Map.Entry<String, Integer> c : colorMap.entrySet()) {
+                if (c.getValue() ==  colorInt){
+                    return c.getKey();
+                }
+            }
+        }
+        return DEFAULT;
+    }
 }
