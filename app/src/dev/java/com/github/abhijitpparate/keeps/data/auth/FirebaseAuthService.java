@@ -18,8 +18,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
 import com.twitter.sdk.android.core.TwitterSession;
 
-import org.json.JSONObject;
-
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
 import io.reactivex.CompletableOnSubscribe;
@@ -120,11 +118,11 @@ public class FirebaseAuthService implements AuthSource {
     }
 
     @Override
-    public Maybe<FirebaseUser> getUser() {
+    public Maybe<User> getUser() {
         Log.d(TAG, "getUser: ");
-        return Maybe.create(new MaybeOnSubscribe<FirebaseUser>() {
+        return Maybe.create(new MaybeOnSubscribe<User>() {
             @Override
-            public void subscribe(@NonNull final MaybeEmitter<FirebaseUser> e) throws Exception {
+            public void subscribe(@NonNull final MaybeEmitter<User> e) throws Exception {
                 Log.d(TAG, "subscribe: ");
                 getAuth().removeAuthStateListener(listener);
                 listener = new FirebaseAuth.AuthStateListener() {
@@ -139,10 +137,10 @@ public class FirebaseAuthService implements AuthSource {
                                     firebaseUser.getDisplayName(),
                                     firebaseUser.getEmail()
                             );
-                            Maybe.just(user);
-                            e.onSuccess(firebaseUser);
+//                            Maybe.just(user);
+                            e.onSuccess(user);
                         } else {
-                            e.onComplete();
+                            e.onError(new Exception("User not found"));
                         }
                     }
                 };
@@ -212,11 +210,11 @@ public class FirebaseAuthService implements AuthSource {
     }
 
     @Override
-    public Maybe<FirebaseUser> attemptGoogleLogin(final GoogleSignInAccount account) {
+    public Maybe<User> attemptGoogleLogin(final GoogleSignInAccount account) {
         Log.d(TAG, "attemptGoogleLogin: ");
-        return Maybe.create(new MaybeOnSubscribe<FirebaseUser>() {
+        return Maybe.create(new MaybeOnSubscribe<User>() {
             @Override
-            public void subscribe(@NonNull final MaybeEmitter<FirebaseUser> e) throws Exception {
+            public void subscribe(@NonNull final MaybeEmitter<User> e) throws Exception {
                 Log.d(TAG, "subscribe: ");
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 getAuth().signInWithCredential(credential)
@@ -228,14 +226,12 @@ public class FirebaseAuthService implements AuthSource {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser firebaseUser = getAuth().getCurrentUser();
                             if (firebaseUser != null){
-//                                User user = new User(
-//                                        firebaseUser.getUid(),
-//                                        firebaseUser.getDisplayName(),
-//                                        firebaseUser.getEmail()
-//                                );
-//                                user.setName(firebaseUser.getDisplayName());
-//                                Maybe.just(user);
-                                e.onSuccess(firebaseUser);
+                                User user = new User(
+                                        firebaseUser.getUid(),
+                                        firebaseUser.getDisplayName(),
+                                        firebaseUser.getEmail()
+                                );
+                                e.onSuccess(user);
                                 e.onComplete();
                                 Log.d(TAG, "signInWithCredential:success");
                             } else {
@@ -254,11 +250,11 @@ public class FirebaseAuthService implements AuthSource {
     }
 
     @Override
-    public Maybe<FirebaseUser> attemptFacebookLogin(final AccessToken accessToken) {
+    public Maybe<User> attemptFacebookLogin(final AccessToken accessToken) {
         Log.d(TAG, "attemptGoogleLogin: ");
-        return Maybe.create(new MaybeOnSubscribe<FirebaseUser>() {
+        return Maybe.create(new MaybeOnSubscribe<User>() {
             @Override
-            public void subscribe(@NonNull final MaybeEmitter<FirebaseUser> e) throws Exception {
+            public void subscribe(@NonNull final MaybeEmitter<User> e) throws Exception {
                 Log.d(TAG, "subscribe: ");
                 AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
                 getAuth().signInWithCredential(credential)
@@ -269,7 +265,12 @@ public class FirebaseAuthService implements AuthSource {
                                 if (task.isSuccessful()) {
                                     FirebaseUser firebaseUser = getAuth().getCurrentUser();
                                     if (firebaseUser != null){
-                                        e.onSuccess(firebaseUser);
+                                        User user = new User(
+                                                firebaseUser.getUid(),
+                                                firebaseUser.getDisplayName(),
+                                                firebaseUser.getEmail()
+                                        );
+                                        e.onSuccess(user);
                                         e.onComplete();
                                         Log.d(TAG, "signInWithCredential : success");
                                     } else {
@@ -287,11 +288,11 @@ public class FirebaseAuthService implements AuthSource {
     }
 
     @Override
-    public Maybe<FirebaseUser> attemptTwitterLogin(final TwitterSession session) {
+    public Maybe<User> attemptTwitterLogin(final TwitterSession session) {
         Log.d(TAG, "attemptTwitterLogin: ");
-        return Maybe.create(new MaybeOnSubscribe<FirebaseUser>() {
+        return Maybe.create(new MaybeOnSubscribe<User>() {
             @Override
-            public void subscribe(@NonNull final MaybeEmitter<FirebaseUser> e) throws Exception {
+            public void subscribe(@NonNull final MaybeEmitter<User> e) throws Exception {
                 Log.d(TAG, "subscribe: ");
                 AuthCredential credential = TwitterAuthProvider.getCredential(
                         session.getAuthToken().token,
@@ -305,7 +306,12 @@ public class FirebaseAuthService implements AuthSource {
                                 if (task.isSuccessful()) {
                                     FirebaseUser firebaseUser = getAuth().getCurrentUser();
                                     if (firebaseUser != null){
-                                        e.onSuccess(firebaseUser);
+                                        User user = new User(
+                                                firebaseUser.getUid(),
+                                                firebaseUser.getDisplayName(),
+                                                firebaseUser.getEmail()
+                                        );
+                                        e.onSuccess(user);
                                         e.onComplete();
                                         Log.d(TAG, "signInWithCredential : success");
                                     } else {

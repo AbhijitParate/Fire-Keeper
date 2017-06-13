@@ -1,17 +1,23 @@
-package com.github.abhijitpparate.keeps.data;
+package com.github.abhijitpparate.keeps;
 
 
+import com.github.abhijitpparate.keeps.data.auth.Credentials;
+import com.github.abhijitpparate.keeps.data.auth.User;
 import com.github.abhijitpparate.keeps.data.database.Note;
 import com.github.abhijitpparate.keeps.data.database.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Constants {
 
     public static final String USERNAME = "john";
     public static final String EMAIL = "a@b.com";
     public static final String PASSWORD = "123456";
+
+    public static final Credentials CREDENTIALS = new Credentials(USERNAME, EMAIL, PASSWORD);
+    public static final User USER = new User(UUID.randomUUID().toString(), USERNAME, EMAIL);
 
     public static final Profile FAKE_PROFILE =
             new Profile(

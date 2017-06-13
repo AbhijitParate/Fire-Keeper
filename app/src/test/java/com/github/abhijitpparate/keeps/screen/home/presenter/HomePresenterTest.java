@@ -1,23 +1,16 @@
-package com.github.abhijitpparate.keeps.screen.login.home.presenter;
+package com.github.abhijitpparate.keeps.screen.home.presenter;
 
-import com.github.abhijitpparate.keeps.R;
 import com.github.abhijitpparate.keeps.data.auth.AuthInjector;
 import com.github.abhijitpparate.keeps.data.auth.AuthSource;
 import com.github.abhijitpparate.keeps.data.database.Note;
-import com.github.abhijitpparate.keeps.screen.home.presenter.HomeContract;
-import com.github.abhijitpparate.keeps.screen.home.presenter.HomePresenter;
-import com.github.abhijitpparate.keeps.screen.login.presenter.login.LoginContract;
-import com.github.abhijitpparate.keeps.screen.login.presenter.login.LoginPresenter;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.verify;
 
 /**

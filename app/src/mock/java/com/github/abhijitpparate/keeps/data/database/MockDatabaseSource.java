@@ -1,8 +1,6 @@
 package com.github.abhijitpparate.keeps.data.database;
 
-
-import com.github.abhijitpparate.keeps.data.Constants;
-import com.github.abhijitpparate.keeps.data.auth.User;
+import com.github.abhijitpparate.keeps.Constants;
 
 import java.util.List;
 
@@ -65,7 +63,7 @@ public class MockDatabaseSource implements DatabaseSource {
     }
 
     @Override
-    public Completable createNewNote(User currentUser, Note note) {
+    public Completable createNewNote(String uid, Note note) {
         Constants.FAKE_NOTES.add(note);
         if (returnFailure){
             return Completable.error(new Exception("Create note failed"));

@@ -18,8 +18,6 @@ public interface AuthSource {
 
     Completable deleteUser();
 
-    Maybe<FirebaseUser> getUser();
-
     Completable logoutUser();
 
     Completable reAuthenticateUser(String password);
@@ -27,7 +25,8 @@ public interface AuthSource {
     void setReturnFail(boolean bool);
     void setAllowRegistration(boolean bool);
 
-    Maybe<FirebaseUser> attemptGoogleLogin(GoogleSignInAccount account);
-    Maybe<FirebaseUser> attemptFacebookLogin(AccessToken token);
-    Maybe<FirebaseUser> attemptTwitterLogin(TwitterSession session);
+    Maybe<User> getUser();
+    Maybe<User> attemptGoogleLogin(GoogleSignInAccount account);
+    Maybe<User> attemptFacebookLogin(AccessToken token);
+    Maybe<User> attemptTwitterLogin(TwitterSession session);
 }

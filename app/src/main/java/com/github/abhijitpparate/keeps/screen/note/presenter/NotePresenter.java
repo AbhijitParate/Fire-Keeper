@@ -6,13 +6,13 @@ import android.util.Log;
 import com.github.abhijitpparate.keeps.R;
 import com.github.abhijitpparate.keeps.data.auth.AuthInjector;
 import com.github.abhijitpparate.keeps.data.auth.AuthSource;
+import com.github.abhijitpparate.keeps.data.auth.User;
 import com.github.abhijitpparate.keeps.data.database.DatabaseInjector;
 import com.github.abhijitpparate.keeps.data.database.DatabaseSource;
 import com.github.abhijitpparate.keeps.data.database.Note;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerInjector;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerProvider;
 import com.github.abhijitpparate.keeps.utils.Utils;
-import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -29,7 +29,7 @@ public class NotePresenter implements NoteContract.Presenter {
     private AuthSource authSource;
     private DatabaseSource databaseSource;
 
-    private FirebaseUser currentUser;
+    private User currentUser;
 
     private NoteContract.View view;
 
@@ -132,9 +132,9 @@ public class NotePresenter implements NoteContract.Presenter {
                         .getUser()
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
-                        .subscribeWith(new DisposableMaybeObserver<FirebaseUser>() {
+                        .subscribeWith(new DisposableMaybeObserver<User>() {
                             @Override
-                            public void onSuccess(@NonNull FirebaseUser user) {
+                            public void onSuccess(@NonNull User user) {
                                 currentUser = user;
 //                                Log.d(TAG, "onSuccess: ");
                                 view.loadNoteIfAvailable();

@@ -95,14 +95,14 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribeWith(
-                            new DisposableMaybeObserver<FirebaseUser>() {
+                            new DisposableMaybeObserver<User>() {
                                 @Override
                                 public void onComplete() {
                                     view.showProgressIndicator(false);
                                 }
 
                                 @Override
-                                public void onSuccess(FirebaseUser user) {
+                                public void onSuccess(User user) {
                                     addUserProfileToDatabase(user.getUid(), user.getEmail());
                                 }
 

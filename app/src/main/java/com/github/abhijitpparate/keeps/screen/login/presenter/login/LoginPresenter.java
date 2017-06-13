@@ -1,11 +1,8 @@
 package com.github.abhijitpparate.keeps.screen.login.presenter.login;
 
-import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.github.abhijitpparate.keeps.BuildConfig;
 import com.github.abhijitpparate.keeps.R;
@@ -22,10 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseUser;
 import com.twitter.sdk.android.core.TwitterSession;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import io.reactivex.Maybe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableCompletableObserver;
@@ -54,7 +47,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @VisibleForTesting
-    LoginPresenter(LoginContract.View view, AuthSource authSource) {
+    public LoginPresenter(LoginContract.View view, AuthSource authSource) {
         this.view = view;
         this.authSource = authSource;
 
@@ -71,14 +64,14 @@ public class LoginPresenter implements LoginContract.Presenter {
                     .getUser()
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
-                    .subscribeWith(new DisposableMaybeObserver<FirebaseUser>() {
+                    .subscribeWith(new DisposableMaybeObserver<User>() {
                         @Override
                         public void onComplete() {
                             view.showProgressIndicator(false);
                         }
 
                         @Override
-                        public void onSuccess(@NonNull FirebaseUser user) {
+                        public void onSuccess(@NonNull User user) {
                             view.showProgressIndicator(false);
                             view.showHomeScreen();
                         }
@@ -176,7 +169,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         .attemptGoogleLogin(account)
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
-                        .subscribeWith(new DisposableMaybeObserver<FirebaseUser>() {
+                        .subscribeWith(new DisposableMaybeObserver<User>() {
                             @Override
                             public void onComplete() {
                                 Log.d(TAG, "onComplete: ");
@@ -186,7 +179,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                             }
 
                             @Override
-                            public void onSuccess(@NonNull FirebaseUser user) {
+                            public void onSuccess(@NonNull User user) {
                                 Log.d(TAG, "onSuccess: ");
                                 view.makeToast(user.getEmail());
                                 view.showProgressIndicator(false);
@@ -213,9 +206,9 @@ public class LoginPresenter implements LoginContract.Presenter {
                         .attemptFacebookLogin(loginResult.getAccessToken())
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
-                        .subscribeWith(new DisposableMaybeObserver<FirebaseUser>() {
+                        .subscribeWith(new DisposableMaybeObserver<User>() {
                             @Override
-                            public void onSuccess(@NonNull FirebaseUser firebaseUser) {
+                            public void onSuccess(@NonNull User firebaseUser) {
                                 registerUser(firebaseUser);
                                 view.showProgressIndicator(false);
                                 Log.d(TAG, "onSuccess: Facebook login");
@@ -242,9 +235,9 @@ public class LoginPresenter implements LoginContract.Presenter {
                         .attemptTwitterLogin(twitterSession)
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
-                        .subscribeWith(new DisposableMaybeObserver<FirebaseUser>() {
+                        .subscribeWith(new DisposableMaybeObserver<User>() {
                             @Override
-                            public void onSuccess(@NonNull FirebaseUser firebaseUser) {
+                            public void onSuccess(@NonNull User firebaseUser) {
                                 registerUser(firebaseUser);
                                 Log.d(TAG, "onSuccess: Twitter login");
                             }
@@ -263,8 +256,8 @@ public class LoginPresenter implements LoginContract.Presenter {
         );
     }
 
-    private void registerUser(FirebaseUser user){
-        Profile profile = new Profile(user.getUid(), user.getDisplayName(), user.getEmail());
+    private void registerUser(User user){
+        Profile profile = new Profile(user.getUid(), user.getName(), user.getEmail());
         disposable.add(
                 databaseSource
                         .createProfile(profile)

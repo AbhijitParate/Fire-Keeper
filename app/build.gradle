@@ -24,12 +24,6 @@ android {
         }
     }
 
-//    externalNativeBuild {
-//        cmake {
-//            path "CMakeLists.txt"
-//        }
-//    }
-
     productFlavors {
         //Mock build
         mock {

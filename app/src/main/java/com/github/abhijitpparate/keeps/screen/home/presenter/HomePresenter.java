@@ -3,6 +3,8 @@ package com.github.abhijitpparate.keeps.screen.home.presenter;
 
 import android.util.Log;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.github.abhijitpparate.keeps.data.auth.AuthInjector;
 import com.github.abhijitpparate.keeps.data.auth.AuthSource;
@@ -13,7 +15,6 @@ import com.github.abhijitpparate.keeps.data.database.Note;
 import com.github.abhijitpparate.keeps.data.database.Profile;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerInjector;
 import com.github.abhijitpparate.keeps.scheduler.SchedulerProvider;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     public static final String TAG = "HomePresenter";
 
-    private FirebaseUser currentUser;
+    private User currentUser;
 
     private AuthSource authSource;
     private DatabaseSource databaseSource;
@@ -35,7 +36,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     private HomeContract.View view;
 
-    boolean isFirstLogin = true;
+    private boolean isFirstLogin = true;
 
     public HomePresenter(HomeContract.View view) {
         this.view = view;
@@ -54,7 +55,9 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void onLogoutClick() {
-        LoginManager.getInstance().logOut();
+        if (FacebookSdk.isInitialized() && AccessToken.getCurrentAccessToken() != null) {
+            LoginManager.getInstance().logOut();
+        }
         disposable.add(
                 authSource.logoutUser()
                         .subscribeOn(schedulerProvider.io())
@@ -99,9 +102,9 @@ public class HomePresenter implements HomeContract.Presenter {
                         .getUser()
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
-                        .subscribeWith(new DisposableMaybeObserver<FirebaseUser>() {
+                        .subscribeWith(new DisposableMaybeObserver<User>() {
                             @Override
-                            public void onSuccess(@NonNull FirebaseUser user) {
+                            public void onSuccess(@NonNull User user) {
                                 Log.d(TAG, "onSuccess: " + user.getEmail());
                                 view.showProgressBar(false);
                                 HomePresenter.this.currentUser = user;

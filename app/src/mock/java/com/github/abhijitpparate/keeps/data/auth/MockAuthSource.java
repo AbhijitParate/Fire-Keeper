@@ -1,14 +1,12 @@
 package com.github.abhijitpparate.keeps.data.auth;
 
-
+import com.facebook.AccessToken;
+import com.github.abhijitpparate.keeps.Constants;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.twitter.sdk.android.core.TwitterSession;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-
-import static com.github.abhijitpparate.keeps.data.Constants.EMAIL;
-import static com.github.abhijitpparate.keeps.data.Constants.PASSWORD;
-import static com.github.abhijitpparate.keeps.data.Constants.USERNAME;
 
 public class MockAuthSource implements AuthSource {
 
@@ -16,8 +14,8 @@ public class MockAuthSource implements AuthSource {
     private boolean autoLogin = false;
     private boolean allowRegistration = true;
 
-    public final Credentials credentials = new Credentials(USERNAME, EMAIL, PASSWORD);
-    public final User user = new User(USERNAME, EMAIL);
+    public final Credentials credentials = Constants.CREDENTIALS;
+    public final User user = Constants.USER;
 
     @Override
     public Completable createNewAccount(Credentials credentials) {
@@ -46,17 +44,6 @@ public class MockAuthSource implements AuthSource {
             return Completable.error(new Exception("Delete user failed"));
         } else {
             return Completable.complete();
-        }
-    }
-
-    @Override
-    public Maybe<User> getUser() {
-        if (returnFailure){
-            return Maybe.error(new Exception("Get user failed"));
-        } else {
-            if (autoLogin) return Maybe.just(user);
-            else if (allowRegistration) return Maybe.just(user);
-            else return Maybe.error(new Exception("Auto login failed"));
         }
     }
 
@@ -91,7 +78,46 @@ public class MockAuthSource implements AuthSource {
     }
 
     @Override
+    public Maybe<User> getUser() {
+        if (returnFailure){
+            return Maybe.error(new Exception("Get user failed"));
+        } else {
+            if (autoLogin) return Maybe.just(user);
+            else if (allowRegistration) return Maybe.just(user);
+            else return Maybe.error(new Exception("Auto login failed"));
+        }
+    }
+
+    @Override
     public Maybe<User> attemptGoogleLogin(GoogleSignInAccount account) {
-        return null;
+        if (returnFailure){
+            return Maybe.error(new Exception("Get user failed"));
+        } else {
+            if (autoLogin) return Maybe.just(user);
+            else if (allowRegistration) return Maybe.just(user);
+            else return Maybe.error(new Exception("Auto login failed"));
+        }
+    }
+
+    @Override
+    public Maybe<User> attemptFacebookLogin(AccessToken token) {
+        if (returnFailure){
+            return Maybe.error(new Exception("Get user failed"));
+        } else {
+            if (autoLogin) return Maybe.just(user);
+            else if (allowRegistration) return Maybe.just(user);
+            else return Maybe.error(new Exception("Auto login failed"));
+        }
+    }
+
+    @Override
+    public Maybe<User> attemptTwitterLogin(TwitterSession session) {
+        if (returnFailure){
+            return Maybe.error(new Exception("Get user failed"));
+        } else {
+            if (autoLogin) return Maybe.just(user);
+            else if (allowRegistration) return Maybe.just(user);
+            else return Maybe.error(new Exception("Auto login failed"));
+        }
     }
 }
