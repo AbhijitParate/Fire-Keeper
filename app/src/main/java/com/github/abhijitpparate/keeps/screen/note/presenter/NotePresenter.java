@@ -1,6 +1,9 @@
 package com.github.abhijitpparate.keeps.screen.note.presenter;
 
 
+import android.util.Log;
+
+import com.github.abhijitpparate.keeps.R;
 import com.github.abhijitpparate.keeps.data.auth.AuthInjector;
 import com.github.abhijitpparate.keeps.data.auth.AuthSource;
 import com.github.abhijitpparate.keeps.data.database.DatabaseInjector;
@@ -18,6 +21,8 @@ import io.reactivex.observers.DisposableMaybeObserver;
 
 public class NotePresenter implements NoteContract.Presenter {
 
+    public static final String TAG = "NotePresenter";
+
     private SchedulerProvider schedulerProvider;
     private CompositeDisposable disposable;
 
@@ -28,7 +33,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
     private NoteContract.View view;
 
-    public static final String TAG = "NotePresenter";
+    private boolean isOptionsOpen = false;
 
     public NotePresenter(NoteContract.View view) {
         this.view = view;
@@ -177,5 +182,71 @@ public class NotePresenter implements NoteContract.Presenter {
     @Override
     public void onImageClick() {
 
+    }
+
+    @Override
+    public void onOptionsClick() {
+        toggleOptionsPanel();
+    }
+
+    private void toggleOptionsPanel(){
+        if (isOptionsOpen){
+            view.hideOptionsPanel();
+        } else {
+            view.showOptionsPanel();
+        }
+        isOptionsOpen = !isOptionsOpen;
+    }
+
+    @Override
+    public void onDeleteClick() {
+        Log.d(TAG, "onDeleteClick: ");
+        toggleOptionsPanel();
+    }
+
+    @Override
+    public void onSendClick() {
+        Log.d(TAG, "onSendClick: ");
+        toggleOptionsPanel();
+    }
+
+    @Override
+    public void onDuplicateClick() {
+        Log.d(TAG, "onDuplicateClick: ");
+        toggleOptionsPanel();
+    }
+
+    @Override
+    public void onLabelClick() {
+        Log.d(TAG, "onLabelClick: ");
+        toggleOptionsPanel();
+    }
+
+    @Override
+    public void onColorSelected(NoteContract.NoteColor color) {
+        Log.d(TAG, "onColorSelected: " + color);
+        switch (color){
+            case WHITE:
+                view.setNoteColor(android.R.color.white);
+                break;
+            case RED:
+                view.setNoteColor(android.R.color.holo_red_light);
+                break;
+            case GREEN:
+                view.setNoteColor(android.R.color.holo_green_light);
+                break;
+            case YELLOW:
+                view.setNoteColor(android.R.color.holo_orange_light);
+                break;
+            case BLUE:
+                view.setNoteColor(android.R.color.holo_blue_bright);
+                break;
+            case ORANGE:
+                view.setNoteColor(android.R.color.holo_orange_dark);
+                break;
+            default:
+                view.setNoteColor(R.color.colorBackground);
+                break;
+        }
     }
 }

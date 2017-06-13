@@ -1,8 +1,12 @@
 package com.github.abhijitpparate.keeps.screen.note;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +16,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -34,6 +40,12 @@ import butterknife.OnClick;
 public class NoteActivity extends AppCompatActivity implements NoteContract.View {
 
     public static final String TAG = "NoteActivity";
+
+    @BindView(R.id.clNote)
+    ConstraintLayout clNote;
+
+    @BindView(R.id.rlNewNote)
+    RelativeLayout rlNewNote;
 
     @BindView(R.id.edtTitle)
     TextView tvNoteTitle;
@@ -65,6 +77,21 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @BindView(R.id.optionsPanel)
     View optionsPanel;
 
+    @BindView(R.id.actionDelete)
+    View actionDelete;
+
+    @BindView(R.id.actionSend)
+    View actionSend;
+
+    @BindView(R.id.actionLabel)
+    View actionLabel;
+
+    @BindView(R.id.actionDuplicate)
+    View actionDuplicate;
+
+    @BindView(R.id.actionNoteColor)
+    RadioGroup actionNoteColor;
+
     NoteContract.Presenter presenter;
 
     String noteType;
@@ -72,13 +99,9 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
 
     private Note currentNote;
 
-    boolean isOptionsOpen = false;
-
     Animation slideDown;
 
     Animation slideUp;
-
-    Animation.AnimationListener animationListener;
 
     public static Intent getIntent(HomeActivity homeActivity, HomeContract.NoteType noteType) {
         Intent intent = new Intent(homeActivity, NoteActivity.class);
@@ -121,6 +144,37 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
             }
         });
 
+        actionNoteColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                String colorText = (String) group.findViewById(checkedId).getTag();
+
+                switch (colorText){
+                    case "white" :
+                        presenter.onColorSelected(NoteContract.NoteColor.WHITE);
+                        break;
+                    case "red" :
+                        presenter.onColorSelected(NoteContract.NoteColor.RED);
+                        break;
+                    case "green" :
+                        presenter.onColorSelected(NoteContract.NoteColor.GREEN);
+                        break;
+                    case "yellow" :
+                        presenter.onColorSelected(NoteContract.NoteColor.YELLOW);
+                        break;
+                    case "blue" :
+                        presenter.onColorSelected(NoteContract.NoteColor.BLUE);
+                        break;
+                    case "orange" :
+                        presenter.onColorSelected(NoteContract.NoteColor.ORANGE);
+                        break;
+                    default:
+                        presenter.onColorSelected(NoteContract.NoteColor.DEFAULT);
+                        break;
+                }
+            }
+        });
+
         setOptionsAnimations();
     }
 
@@ -137,7 +191,6 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
             @Override
             public void onAnimationEnd(Animation animation) {
                 optionsPanel.setVisibility(View.GONE);
-                isOptionsOpen = !isOptionsOpen;
             }
 
             @Override
@@ -155,7 +208,6 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
             @Override
             public void onAnimationEnd(Animation animation) {
                 optionsPanel.setVisibility(View.VISIBLE);
-                isOptionsOpen = !isOptionsOpen;
             }
 
             @Override
@@ -230,6 +282,28 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     }
 
     @Override
+    public void setNoteColor(@ColorRes int color) {
+        Log.d(TAG, "setNoteColor: ");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            clNote.setBackgroundColor(getResources().getColor(color, this.getTheme()));
+            rlNewNote.setBackgroundColor(getResources().getColor(color, this.getTheme()));
+        } else {
+            clNote.setBackgroundColor(getResources().getColor(color));
+            rlNewNote.setBackgroundColor(getResources().getColor(color));
+        }
+    }
+
+    @Override
+    public void showOptionsPanel() {
+        optionsPanel.startAnimation(slideUp);
+    }
+
+    @Override
+    public void hideOptionsPanel() {
+        optionsPanel.startAnimation(slideDown);
+    }
+
+    @Override
     public void showHomeScreen() {
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
@@ -274,31 +348,46 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
 
     @OnClick(R.id.newDrawingNote)
     void onDrawingClick(View view){
-
+        presenter.onDrawingClick();
     }
 
     @OnClick(R.id.newAudioNote)
     void onAudioClick(View view){
-
+        presenter.onAudioClick();
     }
 
     @OnClick(R.id.newVideoNote)
     void onVideoClick(View view){
-
+        presenter.onVideoClick();
     }
 
     @OnClick(R.id.newImageNote)
     void onImageClick(View view){
-
+        presenter.onImageClick();
     }
 
     @OnClick(R.id.btnOptions)
     void onOptionClick(View view){
-        Log.d(TAG, "onOptionClick: ");
-        if (isOptionsOpen){
-            optionsPanel.startAnimation(slideDown);
-        } else {
-            optionsPanel.startAnimation(slideUp);
-        }
+        presenter.onOptionsClick();
+    }
+
+    @OnClick(R.id.actionDelete)
+    void onDeleteClick(View view){
+        presenter.onDeleteClick();
+    }
+
+    @OnClick(R.id.actionSend)
+    void onSendClick(View view){
+        presenter.onSendClick();
+    }
+
+    @OnClick(R.id.actionLabel)
+    void onLabelClick(View view){
+        presenter.onLabelClick();
+    }
+
+    @OnClick(R.id.actionDuplicate)
+    void onDuplicateClick(View view){
+        presenter.onDuplicateClick();
     }
 }

@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clNote"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
@@ -103,23 +104,23 @@
                     android:layout_height="wrap_content">
 
                     <RadioButton
+                        android:id="@+id/tbNoteColorDefault"
+                        android:tag="default"
+                        android:checked="true"
+                        android:background="@drawable/bg_note_color_default"
+                        style="@style/NoteOptions.RadioButton.NoteColor" />
+
+                    <RadioButton
                         android:id="@+id/tbNoteColorWhite"
                         android:tag="white"
-                        android:checked="true"
                         android:background="@drawable/bg_note_color_white"
                         style="@style/NoteOptions.RadioButton.NoteColor" />
 
                     <!--<RadioButton-->
-                        <!--android:id="@+id/tbNoteColorGrey"-->
-                        <!--android:tag="grey"-->
-                        <!--android:background="@drawable/bg_note_color_grey"-->
+                        <!--android:id="@+id/tbNoteColorPurple"-->
+                        <!--android:tag="purple"-->
+                        <!--android:background="@drawable/bg_note_color_purple"-->
                         <!--style="@style/NoteOptions.RadioButton.NoteColor" />-->
-
-                    <RadioButton
-                        android:id="@+id/tbNoteColorPurple"
-                        android:tag="purple"
-                        android:background="@drawable/bg_note_color_purple"
-                        style="@style/NoteOptions.RadioButton.NoteColor" />
 
                     <RadioButton
                         android:id="@+id/tbNoteColorRed"
