@@ -20,14 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".screen.home.HomeActivity"
             android:theme="@style/KeepTheme.NoActionBar"/>
+
         <activity
             android:parentActivityName=".screen.home.HomeActivity"
             android:name=".screen.note.NoteActivity"
             android:windowSoftInputMode="adjustPan"
-            android:theme="@style/KeepTheme"/>
+            android:theme="@style/KeepTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".screen.home.HomeActivity" />
+        </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

@@ -110,8 +110,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void loadNote(final String noteId) {
-//        Log.d(TAG, "loadNote: ");
-        view.makeToast("Loading note...");
+        Log.d(TAG, "loadNote: ");
         view.showProgressbar(true);
         disposable.add(
                 databaseSource
@@ -138,7 +137,6 @@ public class NotePresenter implements NoteContract.Presenter {
                                             view.switchToChecklist();
                                         }
                                         view.setNoteColor(getNoteColor(note.getColor()), note.getColor());
-                                        view.makeToast("Note retrieved successfully");
                                         view.showProgressbar(false);
                                     }
 

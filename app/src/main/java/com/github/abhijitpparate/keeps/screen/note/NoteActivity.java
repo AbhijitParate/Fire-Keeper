@@ -7,6 +7,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -246,6 +247,9 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.actionSave:
                 presenter.onSaveClick();
                 return true;

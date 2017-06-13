@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeActivity extends AppCompatActivity implements HomeContract.View, NotesAdapter.OnNoteClickListener {
+
+    public static final String TAG = "HomeActivity";
 
     private static final int ACTION_NEW_NOTE = 568;
 
@@ -109,8 +112,8 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         presenter.unsubscribe();
     }
 
@@ -148,6 +151,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
     @Override
     public void showLoginScreen() {
         Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(i);
         finish();
     }
@@ -155,7 +159,9 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
     @Override
     public void showNewNoteScreen(HomeContract.NoteType noteType) {
         Intent i = NoteActivity.getIntent(this, noteType);
-        startActivityForResult(i, ACTION_NEW_NOTE);
+//        startActivityForResult(i, ACTION_NEW_NOTE);
+        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(i);
     }
 
     @Override
@@ -226,7 +232,7 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
 
     @Override
     public void onNoteClicked(Note note) {
-        makeToast(note.getTitle() + " clicked");
+        Log.d(TAG, "onNoteClicked: ");
         presenter.onNoteClick(note);
     }
 }
