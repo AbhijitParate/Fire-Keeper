@@ -8,68 +8,66 @@
     android:background="@color/colorBackground"
     tools:context="com.github.abhijitpparate.keeps.screen.note.NoteActivity">
 
-    <EditText
-        android:id="@+id/edtTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:backgroundTint="@android:color/transparent"
-        android:hint="Title"
-        android:textColor="@color/normalTextColor"
-        android:textColorHint="@android:color/darker_gray"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:targetApi="lollipop"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <EditText
-        android:id="@+id/edtBody"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@android:color/transparent"
-        android:hint="New note..."
-        android:textColor="@color/normalTextColor"
-        android:textColorHint="@android:color/darker_gray"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTitle" />
-
-    <com.github.abhijitpparate.checklistview.CheckListView
-        android:id="@+id/checkListView"
+    <RelativeLayout
+        android:id="@+id/rlNote"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/rlNewNote"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtBody"
-        app:layout_constraintVertical_bias="0.03" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <EditText
+            android:id="@+id/edtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:hint="Title"
+            android:textColor="@color/normalTextColor"
+            android:textColorHint="@android:color/darker_gray"
+            android:textStyle="bold"
+            tools:targetApi="lollipop" />
+
+        <EditText
+            android:id="@+id/edtBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtTitle"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:hint="New note..."
+            android:textColor="@color/normalTextColor"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <com.github.abhijitpparate.checklistview.CheckListView
+            android:id="@+id/checkListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtBody"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/optionsPanel"
-        android:orientation="vertical"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rlNewNote">
+        android:background="@color/colorBackground"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/rlNewNote"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <View android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -109,30 +107,30 @@
 
         <LinearLayout style="@style/NoteOptions.Item.Color">
             <HorizontalScrollView
-                android:scrollbars="none"
-                android:layout_gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:scrollbars="none">
 
                 <RadioGroup
                     android:id="@+id/actionNoteColor"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/tbNoteColorDefault"
-                        android:tag="default"
-                        android:checked="true"
+                        style="@style/NoteOptions.RadioButton.NoteColor"
                         android:background="@drawable/bg_note_color_default"
-                        style="@style/NoteOptions.RadioButton.NoteColor" />
+                        android:checked="true"
+                        android:tag="default" />
 
                     <RadioButton
                         android:id="@+id/tbNoteColorWhite"
-                        android:tag="white"
+                        style="@style/NoteOptions.RadioButton.NoteColor"
                         android:background="@drawable/bg_note_color_white"
-                        style="@style/NoteOptions.RadioButton.NoteColor" />
+                        android:tag="white" />
 
                     <!--<RadioButton-->
                         <!--android:id="@+id/tbNoteColorPurple"-->
@@ -142,33 +140,33 @@
 
                     <RadioButton
                         android:id="@+id/tbNoteColorRed"
-                        android:tag="red"
+                        style="@style/NoteOptions.RadioButton.NoteColor"
                         android:background="@drawable/bg_note_color_red"
-                        style="@style/NoteOptions.RadioButton.NoteColor" />
+                        android:tag="red" />
 
                     <RadioButton
                         android:id="@+id/tbNoteColorGreen"
-                        android:tag="green"
+                        style="@style/NoteOptions.RadioButton.NoteColor"
                         android:background="@drawable/bg_note_color_green"
-                        style="@style/NoteOptions.RadioButton.NoteColor" />
+                        android:tag="green" />
 
                     <RadioButton
                         android:id="@+id/tbNoteColorYellow"
-                        android:tag="yellow"
+                        style="@style/NoteOptions.RadioButton.NoteColor"
                         android:background="@drawable/bg_note_color_yellow"
-                        style="@style/NoteOptions.RadioButton.NoteColor" />
+                        android:tag="yellow" />
 
                     <RadioButton
                         android:id="@+id/tbNoteColorBlue"
-                        android:tag="blue"
+                        style="@style/NoteOptions.RadioButton.NoteColor"
                         android:background="@drawable/bg_note_color_blue"
-                        style="@style/NoteOptions.RadioButton.NoteColor" />
+                        android:tag="blue" />
 
                     <RadioButton
                         android:id="@+id/tbNoteColorOrange"
-                        android:tag="orange"
+                        style="@style/NoteOptions.RadioButton.NoteColor"
                         android:background="@drawable/bg_note_color_orange"
-                        style="@style/NoteOptions.RadioButton.NoteColor"  />
+                        android:tag="orange"  />
 
                 </RadioGroup>
             </HorizontalScrollView>
@@ -195,16 +193,16 @@
             android:id="@+id/newListNote"
             android:layout_width="48dp"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_checklist"
+            android:checked="false"
+            android:contentDescription="New List Note"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:hapticFeedbackEnabled="true"
-            android:checked="false"
-            android:background="@drawable/bg_checklist"
             android:textOff=""
-            android:textOn=""
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="New List Note" />
+            android:textOn="" />
 
         <ImageButton
             android:id="@+id/newDrawingNote"
@@ -251,26 +249,25 @@
             android:id="@+id/btnOptions"
             style="@style/Button.Action"
             android:layout_width="48dp"
-            android:textOff=""
-            android:textOn=""
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:background="@drawable/bg_options"
+            android:checked="false"
             android:contentDescription="New List Note"
-            android:background="@drawable/bg_options" />
+            android:textOff=""
+            android:textOn="" />
 
     </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

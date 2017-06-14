@@ -11,25 +11,18 @@ import io.reactivex.Maybe
 
 class FirebaseAuthService : AuthSource {
 
-    private var auth: FirebaseAuth? = null
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var listener: FirebaseAuth.AuthStateListener? = null
 
-    init {
-        this.auth = FirebaseAuth.getInstance()
-    }
-
-    fun getAuth(): FirebaseAuth? {
-        if (auth == null) {
-            auth = FirebaseAuth.getInstance()
-        }
+    fun getAuth(): FirebaseAuth {
         return auth
     }
 
-    override fun createNewAccount(credentials: Credentials): Completable {
+    override fun createNewAccount(cred: Credentials): Completable {
         return Completable.create { e ->
-            getAuth()!!.createUserWithEmailAndPassword(
-                    credentials.email.toString(),
-                    credentials.password.toString()
+            getAuth().createUserWithEmailAndPassword(
+                    cred.email!!,
+                    cred.password!!
                     ).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     e.onComplete()
@@ -42,9 +35,9 @@ class FirebaseAuthService : AuthSource {
 
     override fun attemptLogin(credentials: Credentials): Completable {
         return Completable.create { e ->
-            getAuth()!!.signInWithEmailAndPassword(
-                    credentials.email.toString(),
-                    credentials.password.toString()
+            getAuth().signInWithEmailAndPassword(
+                    credentials.email!!,
+                    credentials.password!!
                     ).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     e.onComplete()
@@ -57,7 +50,7 @@ class FirebaseAuthService : AuthSource {
 
     override fun deleteUser(): Completable {
         return Completable.create { e ->
-            val user = getAuth()!!.currentUser
+            val user = getAuth().currentUser
             user?.delete()
                     ?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -69,37 +62,34 @@ class FirebaseAuthService : AuthSource {
         }
     }
 
-    override //                            Maybe.just(user);
-    val user: Maybe<User>
-        get() {
+    override fun retrieveUser(): Maybe<User> {
             Log.d(TAG, "getUser: ")
             return Maybe.create { e ->
                 Log.d(TAG, "subscribe: ")
-                getAuth()!!.removeAuthStateListener(listener!!)
+                getAuth().removeAuthStateListener(listener!!)
                 listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
                     Log.d(TAG, "onAuthStateChanged: ")
                     val firebaseUser = firebaseAuth.currentUser
-                    auth!!.removeAuthStateListener(listener!!)
-                    if (firebaseUser != null) {
+                    auth.removeAuthStateListener(listener!!)
+
+                    firebaseUser.let {
                         val user = User(
-                                firebaseUser.uid,
-                                firebaseUser.displayName,
-                                firebaseUser.email
+                                firebaseUser?.uid,
+                                firebaseUser?.displayName,
+                                firebaseUser?.email
                         )
                         e.onSuccess(user)
-                    } else {
-                        e.onError(Exception("User not found"))
                     }
                 }
 
-                getAuth()!!.addAuthStateListener(listener!!)
+                getAuth().addAuthStateListener(listener!!)
             }
         }
 
     override fun logoutUser(): Completable {
         return Completable.create { e ->
             listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-                auth!!.removeAuthStateListener(listener!!)
+                auth.removeAuthStateListener(listener!!)
                 if (firebaseAuth.currentUser == null) {
                     e.onComplete()
                 } else {
@@ -107,14 +97,14 @@ class FirebaseAuthService : AuthSource {
                 }
             }
 
-            getAuth()?.addAuthStateListener(listener!!)
-            auth!!.signOut()
+            getAuth().addAuthStateListener(listener!!)
+            auth.signOut()
         }
     }
 
     override fun reAuthenticateUser(password: String): Completable {
         return Completable.create { e ->
-            val user = getAuth()?.currentUser
+            val user = getAuth().currentUser
             if (user != null) {
                 val credential = EmailAuthProvider.getCredential(user.email!!, password)
                 user.reauthenticate(credential)
@@ -144,12 +134,12 @@ class FirebaseAuthService : AuthSource {
         return Maybe.create { e ->
             Log.d(TAG, "subscribe: ")
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-            getAuth()!!.signInWithCredential(credential)
+            getAuth().signInWithCredential(credential)
                     .addOnCompleteListener { task ->
                         Log.d(TAG, "onComplete: ")
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
-                            val firebaseUser = getAuth()!!.currentUser
+                            val firebaseUser = getAuth().currentUser
                             if (firebaseUser != null) {
                                 val user = User(
                                         firebaseUser.uid,
@@ -172,16 +162,16 @@ class FirebaseAuthService : AuthSource {
         }
     }
 
-    override fun attemptFacebookLogin(accessToken: AccessToken): Maybe<User> {
+    override fun attemptFacebookLogin(token: AccessToken): Maybe<User> {
         Log.d(TAG, "attemptGoogleLogin: ")
         return Maybe.create { e ->
             Log.d(TAG, "subscribe: ")
-            val credential = FacebookAuthProvider.getCredential(accessToken.token)
-            getAuth()!!.signInWithCredential(credential)
+            val credential = FacebookAuthProvider.getCredential(token.token)
+            getAuth().signInWithCredential(credential)
                     .addOnCompleteListener { task ->
                         Log.d(TAG, "onComplete: ")
                         if (task.isSuccessful) {
-                            val firebaseUser = getAuth()!!.currentUser
+                            val firebaseUser = getAuth().currentUser
                             if (firebaseUser != null) {
                                 val user = User(
                                         firebaseUser.uid,
@@ -211,11 +201,11 @@ class FirebaseAuthService : AuthSource {
                     session.authToken.token,
                     session.authToken.secret)
 
-            getAuth()!!.signInWithCredential(credential)
+            getAuth().signInWithCredential(credential)
                     .addOnCompleteListener { task ->
                         Log.d(TAG, "onComplete: ")
                         if (task.isSuccessful) {
-                            val firebaseUser = getAuth()!!.currentUser
+                            val firebaseUser = getAuth().currentUser
                             if (firebaseUser != null) {
                                 val user = User(
                                         firebaseUser.uid,

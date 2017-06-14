@@ -21,19 +21,16 @@ import io.reactivex.observers.DisposableMaybeObserver
 
 class HomePresenter(private val view: HomeContract.View) : HomeContract.Presenter {
 
-    private var currentUser: User? = null
+    lateinit var currentUser: User
 
-    private val authSource: AuthSource = AuthInjector.authSource
-    private val databaseSource: DatabaseSource = DatabaseInjector.databaseSource
-    private val schedulerProvider: SchedulerProvider
-    private val disposable: CompositeDisposable
+    internal var authSource: AuthSource = AuthInjector.authSource
+    internal var databaseSource: DatabaseSource = DatabaseInjector.databaseSource
+    internal var schedulerProvider: SchedulerProvider = SchedulerInjector.scheduler
+    internal var disposable: CompositeDisposable = CompositeDisposable()
 
     private var isFirstLogin = true
 
     init {
-        this.schedulerProvider = SchedulerInjector.scheduler
-        this.disposable = CompositeDisposable()
-
         view.setPresenter(this)
     }
 
@@ -81,7 +78,7 @@ class HomePresenter(private val view: HomeContract.View) : HomeContract.Presente
         view.showProgressBar(true)
         disposable.add(
                 authSource
-                        .user
+                        .retrieveUser()
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
                         .subscribeWith(object : DisposableMaybeObserver<User>() {
@@ -96,7 +93,6 @@ class HomePresenter(private val view: HomeContract.View) : HomeContract.Presente
                             override fun onError(@NonNull e: Throwable) {
                                 Log.d(TAG, "onError: ")
                                 view.showProgressBar(false)
-                                view.makeToast(e.message.toString())
                             }
 
                             override fun onComplete() {
@@ -112,7 +108,7 @@ class HomePresenter(private val view: HomeContract.View) : HomeContract.Presente
         view.showProgressBar(true)
         disposable.add(
                 databaseSource
-                        .getNotesForCurrentUser(currentUser!!.uid.toString())
+                        .getNotesForCurrentUser(currentUser.uid!!)
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
                         .subscribeWith(object : DisposableMaybeObserver<List<Note>>() {
@@ -122,7 +118,7 @@ class HomePresenter(private val view: HomeContract.View) : HomeContract.Presente
                             }
 
                             override fun onError(@NonNull e: Throwable) {
-                                view.makeToast(e.message.toString())
+                                view.makeToast(e.message as String)
                                 view.showProgressBar(false)
                             }
 
@@ -137,7 +133,7 @@ class HomePresenter(private val view: HomeContract.View) : HomeContract.Presente
         Log.d(TAG, "getUserProfileFromDatabase: ")
         disposable.add(
                 databaseSource
-                        .getProfile(currentUser!!.uid.toString())
+                        .getProfile(currentUser.uid!!)
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
                         .subscribeWith(object : DisposableMaybeObserver<Profile>() {
@@ -151,7 +147,7 @@ class HomePresenter(private val view: HomeContract.View) : HomeContract.Presente
 
                             override fun onError(@NonNull e: Throwable) {
                                 Log.d(TAG, "onError: ")
-                                view.makeToast(e.message.toString())
+                                view.makeToast(e.message as String)
                                 //                                view.showLoginScreen();
                             }
 
@@ -168,7 +164,6 @@ class HomePresenter(private val view: HomeContract.View) : HomeContract.Presente
     }
 
     companion object {
-
         val TAG = "HomePresenter"
     }
 }

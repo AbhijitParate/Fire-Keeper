@@ -1,5 +1,6 @@
 package com.github.abhijitpparate.keeps.screen.login
 
+import android.app.Fragment
 import android.app.FragmentManager
 import android.content.Intent
 import android.os.Bundle
@@ -17,24 +18,25 @@ import com.github.abhijitpparate.keeps.screen.login.fragments.RegistrationFragme
 class LoginActivity : AppCompatActivity(), ScreenSwitcher {
 
     @BindView(R.id.buildType)
-    val tv: TextView? = null
+    lateinit var tv : TextView
 
-    internal var fragmentManager: FragmentManager? = null
+    lateinit var fm: FragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         ButterKnife.bind(this)
-        tv!!.text = Variant.NAME
 
-        fragmentManager = getFragmentManager()
+        tv.text = Variant.NAME
+
+        fm = this.fragmentManager
         switchToLogin()
     }
 
     override fun switchToLogin() {
-        val ft = fragmentManager!!.beginTransaction()
-        var loginFragment: LoginFragment? = fragmentManager!!.findFragmentByTag(LOGIN_FRAGMENT_TAG) as LoginFragment
+        val ft = fm.beginTransaction()
+        var loginFragment: Fragment? = fm.findFragmentByTag(LOGIN_FRAGMENT_TAG)
 
         if (loginFragment == null) {
             loginFragment = LoginFragment.newInstance()
@@ -46,19 +48,14 @@ class LoginActivity : AppCompatActivity(), ScreenSwitcher {
     }
 
     override fun switchToRegistration() {
-        val ft = fragmentManager!!.beginTransaction()
+        val ft = fm.beginTransaction()
 
-        var registrationFragment: RegistrationFragment? = fragmentManager!!.findFragmentByTag(REGISTER_FRAGMENT_TAG) as RegistrationFragment
+        var registrationFragment: Fragment? = fm.findFragmentByTag(REGISTER_FRAGMENT_TAG)
 
         if (registrationFragment == null) {
             registrationFragment = RegistrationFragment.newInstance()
         }
 
-        // Custom animations
-        // Param 1 - Enter animation
-        // Param 2 - Exit animation
-        // Param 3 - Enter animation for replaced fragment (from back stack)
-        // Param 1 - Exit animation for replaced fragment (from back stack)
         ft.setCustomAnimations(R.animator.enter_slide_from_left, R.animator.exit_slide_to_left, R.animator.enter_slide_from_left, R.animator.exit_slide_to_left)
         ft.replace(R.id.fragmentContainer, registrationFragment, REGISTER_FRAGMENT_TAG)
         ft.addToBackStack(REGISTER_FRAGMENT_TAG)
@@ -68,7 +65,7 @@ class LoginActivity : AppCompatActivity(), ScreenSwitcher {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         Log.d(TAG, "onActivityResult: ")
-        val loginFragment = fragmentManager!!.findFragmentByTag(LOGIN_FRAGMENT_TAG) as LoginFragment
+        val loginFragment = fm.findFragmentByTag(LOGIN_FRAGMENT_TAG) as LoginFragment
         loginFragment.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -79,7 +76,6 @@ class LoginActivity : AppCompatActivity(), ScreenSwitcher {
     }
 
     companion object {
-
         val TAG = "LoginActivity"
         val LOGIN_FRAGMENT_TAG = "LOGIN_FRAGMENT"
         val REGISTER_FRAGMENT_TAG = "REGISTER_FRAGMENT"

@@ -87,7 +87,7 @@ class RegistrationPresenter : RegistrationContract.Presenter {
     private fun getUser() {
         disposable!!.add(
                 authSource!!
-                        .user
+                        .retrieveUser()
                         .subscribeOn(schedulerProvider!!.io())
                         .observeOn(schedulerProvider!!.ui())
                         .subscribeWith(

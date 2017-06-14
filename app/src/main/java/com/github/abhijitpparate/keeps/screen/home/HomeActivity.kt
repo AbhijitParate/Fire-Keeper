@@ -34,38 +34,38 @@ import java.util.*
 class HomeActivity : AppCompatActivity(), HomeContract.View, NotesAdapter.OnNoteClickListener {
 
     @BindView(R.id.rootView)
-    internal var coordinatorLayout: CoordinatorLayout? = null
+    lateinit var coordinatorLayout: CoordinatorLayout
 
     @BindView(R.id.swipeRefreshLayout)
-    internal var swipeRefreshLayout: SwipeRefreshLayout? = null
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     @BindView(R.id.rvNotes)
-    internal var rvNotes: RecyclerView? = null
+    lateinit var rvNotes: RecyclerView
 
     @BindView(R.id.newTextNote)
-    internal var btnNewTextNote: Button? = null
+    lateinit var btnNewTextNote: Button
 
     @BindView(R.id.newImageNote)
-    internal var btnNewImageNote: ImageButton? = null
+    lateinit var btnNewImageNote: ImageButton
 
     @BindView(R.id.newVideoNote)
-    internal var btnNewVideoNote: ImageButton? = null
+    lateinit var btnNewVideoNote: ImageButton
 
     @BindView(R.id.newAudioNote)
-    internal var btnNewAudioNote: ImageButton? = null
+    lateinit var btnNewAudioNote: ImageButton
 
     @BindView(R.id.newDrawingNote)
-    internal var btnNewDrawing: ImageButton? = null
+    lateinit var btnNewDrawing: ImageButton
 
     @BindView(R.id.newListNote)
-    internal var btnNewListNote: ImageButton? = null
+    lateinit var btnNewListNote: ImageButton
 
     @BindView(R.id.progressBar)
-    internal var progressBar: ProgressBar? = null
+    lateinit var progressBar: ProgressBar
 
-    internal var presenter: HomeContract.Presenter? = null
+    lateinit var mPresenter: HomeContract.Presenter
 
-    internal var notesAdapter: NotesAdapter? = null
+    lateinit var notesAdapter: NotesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,31 +76,29 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, NotesAdapter.OnNote
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        if (presenter == null) {
-            presenter = HomePresenter(this)
-        }
+        mPresenter = HomePresenter(this)
 
         notesAdapter = NotesAdapter(this, ArrayList<Note>())
-        notesAdapter!!.setNoteClickListener(this)
+        notesAdapter.setNoteClickListener(this)
 
-        rvNotes!!.adapter = notesAdapter
-        rvNotes!!.layoutManager = LinearLayoutManager(this)
-        rvNotes!!.itemAnimator = DefaultItemAnimator()
+        rvNotes.adapter = notesAdapter
+        rvNotes.layoutManager = LinearLayoutManager(this)
+        rvNotes.itemAnimator = DefaultItemAnimator()
 
-        swipeRefreshLayout!!.setOnRefreshListener {
-            presenter!!.onRefresh()
-            swipeRefreshLayout!!.isRefreshing = false
+        swipeRefreshLayout.setOnRefreshListener {
+            mPresenter.onRefresh()
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
     override fun onStart() {
         super.onStart()
-        presenter!!.subscribe()
+        mPresenter.subscribe()
     }
 
     override fun onStop() {
         super.onStop()
-        presenter!!.unsubscribe()
+        mPresenter.unsubscribe()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -111,7 +109,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, NotesAdapter.OnNote
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionLogout -> {
-                presenter!!.onLogoutClick()
+                mPresenter.onLogoutClick()
                 return true
             }
             R.id.actionView -> return true
@@ -122,11 +120,11 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, NotesAdapter.OnNote
     }
 
     override fun setUserInfo(profile: Profile) {
-        Snackbar.make(coordinatorLayout!!, "Logged in as " + profile.name, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(coordinatorLayout, "Logged in as " + profile.name, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun setNotes(notes: List<Note>) {
-        notesAdapter!!.updateDataset(notes)
+        notesAdapter.updateDataset(notes)
     }
 
     override fun showLoginScreen() {
@@ -149,14 +147,14 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, NotesAdapter.OnNote
     }
 
     override fun setPresenter(presenter: HomeContract.Presenter) {
-        this.presenter = presenter
+        this.mPresenter = presenter
     }
 
     override fun showProgressBar(bool: Boolean) {
         if (bool) {
-            progressBar!!.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
         } else {
-            progressBar!!.visibility = View.GONE
+            progressBar.visibility = View.GONE
         }
     }
 
@@ -171,42 +169,42 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, NotesAdapter.OnNote
     @OnClick(R.id.newTextNote)
     fun onNewTextNoteClick(view: View) {
         makeToast(view.contentDescription.toString())
-        presenter!!.onNewNoteClick(HomeContract.NoteType.TEXT)
+        mPresenter.onNewNoteClick(HomeContract.NoteType.TEXT)
     }
 
     @OnClick(R.id.newImageNote)
     fun onNewImageNoteClick(view: View) {
         makeToast(view.contentDescription.toString())
-        presenter!!.onNewNoteClick(HomeContract.NoteType.IMAGE)
+        mPresenter.onNewNoteClick(HomeContract.NoteType.IMAGE)
     }
 
     @OnClick(R.id.newVideoNote)
     fun onNewVideoNoteClick(view: View) {
         makeToast(view.contentDescription.toString())
-        presenter!!.onNewNoteClick(HomeContract.NoteType.VIDEO)
+        mPresenter.onNewNoteClick(HomeContract.NoteType.VIDEO)
     }
 
     @OnClick(R.id.newAudioNote)
     fun onNewAudioNoteClick(view: View) {
         makeToast(view.contentDescription.toString())
-        presenter!!.onNewNoteClick(HomeContract.NoteType.AUDIO)
+        mPresenter.onNewNoteClick(HomeContract.NoteType.AUDIO)
     }
 
     @OnClick(R.id.newDrawingNote)
     fun onNewDrawingNoteClick(view: View) {
         makeToast(view.contentDescription.toString())
-        presenter!!.onNewNoteClick(HomeContract.NoteType.DRAWING)
+        mPresenter.onNewNoteClick(HomeContract.NoteType.DRAWING)
     }
 
     @OnClick(R.id.newListNote)
     fun onNewListNoteClick(view: View) {
         makeToast(view.contentDescription.toString())
-        presenter!!.onNewNoteClick(HomeContract.NoteType.LIST)
+        mPresenter.onNewNoteClick(HomeContract.NoteType.LIST)
     }
 
     override fun onNoteClicked(note: Note) {
         Log.d(TAG, "onNoteClicked: ")
-        presenter!!.onNoteClick(note)
+        mPresenter.onNoteClick(note)
     }
 
     companion object {

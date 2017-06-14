@@ -1,13 +1,10 @@
 package com.github.abhijitpparate.keeps.screen.note
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.annotation.ColorRes
-import android.support.annotation.IdRes
 import android.support.annotation.StringRes
 import android.support.constraint.ConstraintLayout
-import android.support.v4.app.NavUtils
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -16,15 +13,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.CompoundButton
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.RadioGroup
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.ToggleButton
-
+import android.widget.*
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.github.abhijitpparate.checklistview.CheckListItem
 import com.github.abhijitpparate.checklistview.CheckListView
 import com.github.abhijitpparate.keeps.R
@@ -34,79 +26,75 @@ import com.github.abhijitpparate.keeps.screen.home.presenter.HomeContract
 import com.github.abhijitpparate.keeps.screen.note.presenter.NoteContract
 import com.github.abhijitpparate.keeps.screen.note.presenter.NotePresenter
 
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
-
-import com.github.abhijitpparate.keeps.data.database.Note.NoteColor.WHITE
-
 class NoteActivity : AppCompatActivity(), NoteContract.View {
 
     @BindView(R.id.clNote)
-    internal var clNote: ConstraintLayout? = null
+    lateinit var clNote: ConstraintLayout
+
+    @BindView(R.id.rlNote)
+    lateinit var rlNote: RelativeLayout
 
     @BindView(R.id.rlNewNote)
-    internal var rlNewNote: RelativeLayout? = null
+    lateinit var rlNewNote: RelativeLayout
 
     @BindView(R.id.edtTitle)
-    internal var tvNoteTitle: TextView? = null
+    lateinit var tvNoteTitle: TextView
 
     @BindView(R.id.edtBody)
-    internal var tvNoteBody: TextView? = null
+    lateinit var tvNoteBody: TextView
 
     @BindView(R.id.checkListView)
-    internal var checkListView: CheckListView? = null
+    lateinit var checkListView: CheckListView
 
     @BindView(R.id.newListNote)
-    internal var btnListNote: ToggleButton? = null
+    lateinit var btnListNote: ToggleButton
 
     @BindView(R.id.newDrawingNote)
-    internal var btnNewDrawing: ImageButton? = null
+    lateinit var btnNewDrawing: ImageButton
 
     @BindView(R.id.newAudioNote)
-    internal var btnNewAudioNote: ImageButton? = null
+    lateinit var btnNewAudioNote: ImageButton
 
     @BindView(R.id.newVideoNote)
-    internal var btnNewVideoNote: ImageButton? = null
+    lateinit var btnNewVideoNote: ImageButton
 
     @BindView(R.id.newImageNote)
-    internal var btnNewImageNote: ImageButton? = null
+    lateinit var btnNewImageNote: ImageButton
 
     @BindView(R.id.btnOptions)
-    internal var options: ToggleButton? = null
+    lateinit var btnOptions: ToggleButton
 
     @BindView(R.id.optionsPanel)
-    internal var optionsPanel: View? = null
+    lateinit var optionsPanel: View
 
     @BindView(R.id.actionDelete)
-    internal var actionDelete: View? = null
+    lateinit var actionDelete: View
 
     @BindView(R.id.actionSend)
-    internal var actionSend: View? = null
+    lateinit var actionSend: View
 
     @BindView(R.id.actionLabel)
-    internal var actionLabel: View? = null
+    lateinit var actionLabel: View
 
     @BindView(R.id.actionDuplicate)
-    internal var actionDuplicate: View? = null
+    lateinit var actionDuplicate: View
 
     @BindView(R.id.actionNoteColor)
-    internal var actionNoteColor: RadioGroup? = null
+    lateinit var actionNoteColor: RadioGroup
 
     @BindView(R.id.progressBar)
-    internal var progressBar: ProgressBar? = null
+    lateinit var progressBar: ProgressBar
 
-    internal var presenter: NoteContract.Presenter? = null
+    lateinit var mPresenter: NoteContract.Presenter
 
-    internal var noteType: String = ""
-    override var noteId: String = ""
-        internal set
+    internal var noteType: String? = null
+    internal var noteId: String? = null
 
     private var currentNote = Note()
 
-    internal var slideDown: Animation? = null
+    lateinit var slideDown: Animation
 
-    internal var slideUp: Animation? = null
+    lateinit var slideUp: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,42 +110,42 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
 
         ButterKnife.bind(this)
 
-        if (presenter == null) {
-            presenter = NotePresenter(this)
-        }
+        mPresenter = NotePresenter(this)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        btnListNote!!.setOnCheckedChangeListener { buttonView, isChecked -> presenter!!.onChecklistClick(isChecked) }
+        btnListNote.setOnCheckedChangeListener { _, isChecked -> mPresenter.onChecklistClick(isChecked) }
 
-        actionNoteColor!!.setOnCheckedChangeListener { group, checkedId ->
+        actionNoteColor.setOnCheckedChangeListener { group, checkedId ->
             val colorText = group.findViewById(checkedId).tag as String
 
             when (colorText) {
-                "white" -> presenter!!.onColorSelected(NoteContract.NoteColor.WHITE)
-                "red" -> presenter!!.onColorSelected(NoteContract.NoteColor.RED)
-                "green" -> presenter!!.onColorSelected(NoteContract.NoteColor.GREEN)
-                "yellow" -> presenter!!.onColorSelected(NoteContract.NoteColor.YELLOW)
-                "blue" -> presenter!!.onColorSelected(NoteContract.NoteColor.BLUE)
-                "orange" -> presenter!!.onColorSelected(NoteContract.NoteColor.ORANGE)
-                else -> presenter!!.onColorSelected(NoteContract.NoteColor.DEFAULT)
+                "white" -> mPresenter.onColorSelected(NoteContract.NoteColor.WHITE)
+                "red" -> mPresenter.onColorSelected(NoteContract.NoteColor.RED)
+                "green" -> mPresenter.onColorSelected(NoteContract.NoteColor.GREEN)
+                "yellow" -> mPresenter.onColorSelected(NoteContract.NoteColor.YELLOW)
+                "blue" -> mPresenter.onColorSelected(NoteContract.NoteColor.BLUE)
+                "orange" -> mPresenter.onColorSelected(NoteContract.NoteColor.ORANGE)
+                else -> mPresenter.onColorSelected(NoteContract.NoteColor.DEFAULT)
             }
         }
 
         setOptionsAnimations()
+
+        btnOptions.setOnCheckedChangeListener({ _, _ -> mPresenter.onOptionsClick() })
     }
 
     private fun setOptionsAnimations() {
         slideDown = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_down)
         slideUp = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_up)
 
-        slideDown?.setAnimationListener(object : Animation.AnimationListener {
+        slideDown.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
 
             }
 
             override fun onAnimationEnd(animation: Animation) {
-                optionsPanel!!.visibility = View.GONE
+                optionsPanel.visibility = View.GONE
             }
 
             override fun onAnimationRepeat(animation: Animation) {
@@ -165,13 +153,14 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
             }
         })
 
-        slideUp?.setAnimationListener(object : Animation.AnimationListener {
+        slideUp.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
 
             }
 
             override fun onAnimationEnd(animation: Animation) {
-                optionsPanel!!.visibility = View.VISIBLE
+                optionsPanel.visibility = View.VISIBLE
+                optionsPanel.requestFocus()
             }
 
             override fun onAnimationRepeat(animation: Animation) {
@@ -183,12 +172,12 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
 
     override fun onResume() {
         super.onResume()
-        presenter!!.subscribe()
+        mPresenter.subscribe()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter!!.unsubscribe()
+        mPresenter.unsubscribe()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -203,27 +192,33 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
                 return true
             }
             R.id.actionSave -> {
-                presenter!!.onSaveClick()
+                mPresenter.onSaveClick()
                 return true
             }
         }
         return false
     }
 
+    override var noteUuid: String
+        get() = noteId!!
+        set(noteId) {
+            this.noteId = noteId
+        }
+
     override var noteTitle: String
-        get() = tvNoteTitle!!.text.toString()
+        get() = tvNoteTitle.text.toString()
         set(title) {
-            this.tvNoteTitle!!.text = title
+            this.tvNoteTitle.text = title
         }
 
     override var noteBody: String
-        get() = tvNoteBody!!.text.toString()
+        get() = tvNoteBody.text.toString()
         set(body) {
-            this.tvNoteBody!!.text = body
+            this.tvNoteBody.text = body
         }
 
     override val checkList: String
-        get() = checkListView!!.checkListAsString
+        get() = checkListView.checkListAsString
 
     override val noteColor: String
         get() = currentNote.color.toString()
@@ -233,25 +228,26 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
     }
 
     override fun setNoteChecklist(checklist: List<CheckListItem>) {
-        checkListView!!.setChecklist(checklist)
+        checkListView.setChecklist(checklist)
     }
 
     override fun setNoteColor(@ColorRes colorInt: Int, colorString: String) {
         Log.d(TAG, "setNoteColor: ")
         val c = ResourcesCompat.getColor(resources, colorInt, null)
 
-        clNote!!.setBackgroundColor(c)
-        rlNewNote!!.setBackgroundColor(c)
+        clNote.setBackgroundColor(c)
+        optionsPanel.setBackgroundColor(c)
+        rlNewNote.setBackgroundColor(c)
 
         currentNote.color = colorString
     }
 
     override fun showOptionsPanel() {
-        optionsPanel!!.startAnimation(slideUp)
+        optionsPanel.startAnimation(slideUp)
     }
 
     override fun hideOptionsPanel() {
-        optionsPanel!!.startAnimation(slideDown)
+        optionsPanel.startAnimation(slideDown)
     }
 
     override fun showHomeScreen() {
@@ -262,19 +258,19 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
 
     override fun loadNoteIfAvailable() {
         if (noteId != null) {
-            presenter!!.loadNote(noteId)
+            mPresenter.loadNote(noteId!!)
         }
     }
 
     override fun setPresenter(presenter: NoteContract.Presenter) {
-        this.presenter = presenter
+        this.mPresenter = presenter
     }
 
     override fun showProgressbar(bool: Boolean) {
         if (bool) {
-            progressBar!!.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
         } else {
-            progressBar!!.visibility = View.GONE
+            progressBar.visibility = View.GONE
         }
     }
 
@@ -287,60 +283,65 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
     }
 
     override fun switchToChecklist() {
-        tvNoteBody!!.visibility = View.GONE
-        checkListView!!.visibility = View.VISIBLE
-        btnListNote!!.isChecked = true
+        tvNoteBody.visibility = View.GONE
+        checkListView.visibility = View.VISIBLE
+        btnListNote.isChecked = true
     }
 
     override fun switchToText() {
-        tvNoteBody!!.visibility = View.VISIBLE
-        checkListView!!.visibility = View.GONE
-        btnListNote!!.isChecked = false
+        tvNoteBody.visibility = View.VISIBLE
+        checkListView.visibility = View.GONE
+        btnListNote.isChecked = false
+    }
+
+    @OnClick(R.id.rlNote)
+    internal fun onNoteClick(view: View) {
+        btnOptions.isChecked = false
     }
 
     @OnClick(R.id.newDrawingNote)
     internal fun onDrawingClick(view: View) {
-        presenter!!.onDrawingClick()
+        mPresenter.onDrawingClick()
     }
 
     @OnClick(R.id.newAudioNote)
     internal fun onAudioClick(view: View) {
-        presenter!!.onAudioClick()
+        mPresenter.onAudioClick()
     }
 
     @OnClick(R.id.newVideoNote)
     internal fun onVideoClick(view: View) {
-        presenter!!.onVideoClick()
+        mPresenter.onVideoClick()
     }
 
     @OnClick(R.id.newImageNote)
     internal fun onImageClick(view: View) {
-        presenter!!.onImageClick()
+        mPresenter.onImageClick()
     }
 
-    @OnClick(R.id.btnOptions)
-    internal fun onOptionClick(view: View) {
-        presenter!!.onOptionsClick()
-    }
+//    @OnClick(R.id.btnOptions)
+//    internal fun onOptionClick(view: View) {
+//        mPresenter.onOptionsClick()
+//    }
 
     @OnClick(R.id.actionDelete)
     internal fun onDeleteClick(view: View) {
-        presenter!!.onDeleteClick()
+        mPresenter.onDeleteClick()
     }
 
     @OnClick(R.id.actionSend)
     internal fun onSendClick(view: View) {
-        presenter!!.onSendClick()
+        mPresenter.onSendClick()
     }
 
     @OnClick(R.id.actionLabel)
     internal fun onLabelClick(view: View) {
-        presenter!!.onLabelClick()
+        mPresenter.onLabelClick()
     }
 
     @OnClick(R.id.actionDuplicate)
     internal fun onDuplicateClick(view: View) {
-        presenter!!.onDuplicateClick()
+        mPresenter.onDuplicateClick()
     }
 
     companion object {

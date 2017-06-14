@@ -11,4 +11,11 @@
     <color name="normalTextColor">#212121</color>
     <color name="largeTextColor">#424242</color>
     <color name="inputHintColor">#9E9E9E</color>
+
+
+    <color name="noteColorRed">#ef9a9a</color>
+    <color name="noteColorGreen">#A5D6A7</color>
+    <color name="noteColorYellow">#FFF59D</color>
+    <color name="noteColorBlue">#90CAF9</color>
+    <color name="noteColorOrange">#FFCC80</color>
 </resources>

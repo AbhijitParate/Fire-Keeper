@@ -12,7 +12,7 @@ import io.reactivex.Maybe
 
 interface AuthSource {
 
-    fun createNewAccount(credentials: Credentials): Completable
+    fun createNewAccount(cred: Credentials): Completable
 
     fun attemptLogin(credentials: Credentials): Completable
 
@@ -25,7 +25,7 @@ interface AuthSource {
     fun setReturnFail(bool: Boolean)
     fun setAllowRegistration(bool: Boolean)
 
-    val user: Maybe<User>
+    fun retrieveUser(): Maybe<User>
     fun attemptGoogleLogin(account: GoogleSignInAccount): Maybe<User>
     fun attemptFacebookLogin(token: AccessToken): Maybe<User>
     fun attemptTwitterLogin(session: TwitterSession): Maybe<User>

@@ -68,16 +68,16 @@ class NotesAdapter(private val context: Context, private val noteList: MutableLi
     inner class NotesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @BindView(R.id.rlNoteCard)
-        var rlNoteCard: View? = null
+        lateinit var rlNoteCard: View
 
         @BindView(R.id.tvTitle)
-        var tvTitle: TextView? = null
+        lateinit var tvTitle: TextView
 
         @BindView(R.id.tvCreated)
-        var tvCreated: TextView? = null
+        lateinit var tvCreated: TextView
 
         @BindView(R.id.tvBody)
-        var tvBody: TextView? = null
+        lateinit var tvBody: TextView
 
         init {
             ButterKnife.bind(this, itemView)
@@ -93,7 +93,7 @@ class NotesAdapter(private val context: Context, private val noteList: MutableLi
         }
 
         fun setTitle(title: String) {
-            this.tvTitle!!.text = title
+            this.tvTitle.text = title
         }
 
         fun setCreated(created: String) {
@@ -107,16 +107,16 @@ class NotesAdapter(private val context: Context, private val noteList: MutableLi
                 date = Calendar.getInstance().time
             }
 
-            this.tvCreated!!.text = DateUtils.getRelativeTimeSpanString(date.time)
+            this.tvCreated.text = DateUtils.getRelativeTimeSpanString(date.time)
         }
 
         fun setBody(body: String) {
-            this.tvBody!!.text = body
+            this.tvBody.text = body
         }
 
         fun setCheckList(checkList: String?) {
             Log.d("NoteAdapter", "setCheckList: ")
-            val sb = StringBuilder(this.tvBody!!.text)
+            val sb = StringBuilder(this.tvBody.text)
             if (checkList != null && !checkList.isEmpty()) {
                 val j = JSONTokener(checkList)
                 try {
@@ -135,7 +135,7 @@ class NotesAdapter(private val context: Context, private val noteList: MutableLi
                         sb.append("\n")
                     }
 
-                    this.tvBody!!.text = sb.toString()
+                    this.tvBody.text = sb.toString()
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -144,7 +144,7 @@ class NotesAdapter(private val context: Context, private val noteList: MutableLi
         }
 
         fun setColor(color: String) {
-            rlNoteCard!!.setBackgroundColor(ResourcesCompat.getColor(context.resources, getNoteColor(color), null))
+            rlNoteCard.setBackgroundColor(ResourcesCompat.getColor(context.resources, getNoteColor(color), null))
         }
     }
 

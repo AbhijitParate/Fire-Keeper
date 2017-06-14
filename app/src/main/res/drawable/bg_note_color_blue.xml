@@ -7,7 +7,7 @@
                 android:width="1dp"
                 android:color="@android:color/darker_gray" />
 
-            <solid android:color="@android:color/holo_blue_light"/>
+            <solid android:color="@color/noteColorBlue"/>
         </shape>
     </item>
     <item android:drawable="@drawable/ic_note_color" />

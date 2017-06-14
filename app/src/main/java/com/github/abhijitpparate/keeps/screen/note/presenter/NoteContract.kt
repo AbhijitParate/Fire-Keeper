@@ -15,13 +15,13 @@ interface NoteContract {
 
     interface View {
 
-        val noteId: String
+        val noteUuid: String
         var noteTitle: String
         var noteBody: String
         val checkList: String
         val noteColor: String
 
-        fun setNote(notes: Note)
+        fun setNote(note: Note)
         fun setNoteChecklist(checklist: List<CheckListItem>)
         fun setNoteColor(@ColorRes colorInt: Int, colorString: String)
 

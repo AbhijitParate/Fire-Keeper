@@ -10,7 +10,7 @@ class Profile {
     /**
      * Empty constructor is needed by firebase
      */
-    constructor() {}
+    constructor()
 
     constructor(uid: String, name: String, email: String) {
         this.uid = uid

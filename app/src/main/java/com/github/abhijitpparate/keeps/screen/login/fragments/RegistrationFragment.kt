@@ -23,28 +23,28 @@ import butterknife.OnClick
 class RegistrationFragment : Fragment(), RegistrationContract.View {
 
     @BindView(R.id.edtName)
-    internal var edtName: EditText? = null
+    lateinit var edtName: EditText
 
     @BindView(R.id.edtEmail)
-    internal var edtEmail: EditText? = null
+    lateinit var edtEmail: EditText
 
     @BindView(R.id.edtPassword)
-    internal var edtPassword: EditText? = null
+    lateinit var edtPassword: EditText
 
     @BindView(R.id.edtPasswordConfirm)
-    internal var edtPasswordConfirmation: EditText? = null
+    lateinit var edtPasswordConfirmation: EditText
 
     @BindView(R.id.btnLogin)
-    internal var mButtonLogin: Button? = null
+    lateinit var mButtonLogin: Button
 
     @BindView(R.id.btnRegister)
-    internal var mButtonLRegister: Button? = null
+    lateinit var mButtonLRegister: Button
 
     @BindView(R.id.progressBar)
-    internal var mProgressBar: ProgressBar? = null
+    lateinit var mProgressBar: ProgressBar
 
-    private var screenSwitcher: ScreenSwitcher? = null
-    private var presenter: RegistrationContract.Presenter? = null
+    lateinit var screenSwitcher: ScreenSwitcher
+    lateinit var mPresenter: RegistrationContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,16 +55,12 @@ class RegistrationFragment : Fragment(), RegistrationContract.View {
         super.onActivityCreated(savedInstanceState)
         screenSwitcher = activity as ScreenSwitcher
 
-        if (presenter == null) {
-            presenter = RegistrationPresenter(this)
-        }
-
-        presenter!!.subscribe()
+        mPresenter = RegistrationPresenter(this)
+        mPresenter.subscribe()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
-
-        val root = inflater.inflate(R.layout.fragment_registration, container, false)
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val root = inflater!!.inflate(R.layout.fragment_registration, container, false)
 
         ButterKnife.bind(this, root)
 
@@ -73,49 +69,49 @@ class RegistrationFragment : Fragment(), RegistrationContract.View {
 
     override fun onDetach() {
         super.onDetach()
-        presenter!!.unsubscribe()
+        mPresenter.unsubscribe()
     }
 
     @OnClick(R.id.btnLogin)
     fun onLoginClick(view: View) {
-        presenter!!.onLoginClick()
+        mPresenter.onLoginClick()
     }
 
     @OnClick(R.id.btnRegister)
     fun onRegisterClick(view: View) {
-        presenter!!.onRegisterClick()
+        mPresenter.onRegisterClick()
     }
 
     override val name: String
-        get() = edtName!!.text.toString()
+        get() = edtName.text.toString()
 
     override val email: String
-        get() = edtEmail!!.text.toString()
+        get() = edtEmail.text.toString()
 
     override val password: String
-        get() = edtPassword!!.text.toString()
+        get() = edtPassword.text.toString()
 
     override val passwordConfirmation: String
-        get() = edtPasswordConfirmation!!.text.toString()
+        get() = edtPasswordConfirmation.text.toString()
 
     override fun showLoginScreen() {
-        screenSwitcher!!.switchToLogin()
+        screenSwitcher.switchToLogin()
     }
 
     override fun showHomeScreen() {
-        screenSwitcher!!.startHomeActivity()
+        screenSwitcher.startHomeActivity()
     }
 
     override fun showProgressIndicator(show: Boolean) {
         if (show) {
-            mProgressBar!!.visibility = View.VISIBLE
+            mProgressBar.visibility = View.VISIBLE
         } else {
-            mProgressBar!!.visibility = View.GONE
+            mProgressBar.visibility = View.GONE
         }
     }
 
     override fun setPresenter(presenter: RegistrationContract.Presenter) {
-        this.presenter = presenter
+        this.mPresenter = presenter
     }
 
     override fun makeToast(@StringRes strId: Int) {

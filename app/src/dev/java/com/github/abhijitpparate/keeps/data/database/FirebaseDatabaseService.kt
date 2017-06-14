@@ -1,23 +1,14 @@
 package com.github.abhijitpparate.keeps.data.database
 
 import android.util.Log
-
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-
-import java.util.ArrayList
-
 import io.reactivex.Completable
-import io.reactivex.CompletableEmitter
-import io.reactivex.CompletableOnSubscribe
 import io.reactivex.Maybe
-import io.reactivex.MaybeEmitter
-import io.reactivex.MaybeOnSubscribe
+import java.lang.Error
+import java.util.*
 
 class FirebaseDatabaseService private constructor() : DatabaseSource {
 
@@ -43,6 +34,7 @@ class FirebaseDatabaseService private constructor() : DatabaseSource {
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.d("FIREBASE", databaseError.toString())
+                    e.onError(Error("Database error"))
                 }
             })
         }
@@ -59,12 +51,13 @@ class FirebaseDatabaseService private constructor() : DatabaseSource {
                         val profile = snapshot.getValue(Profile::class.java)
                         e.onSuccess(profile)
                     } else {
-                        e.onComplete()
+                        e.onError(Error("Profile not found"))
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.d("FIREBASE", databaseError.toString())
+                    e.onError(Error("Database error"))
                 }
             })
         }
@@ -81,12 +74,13 @@ class FirebaseDatabaseService private constructor() : DatabaseSource {
                         val note = snapshot.getValue(Note::class.java)
                         e.onSuccess(note)
                     } else {
-                        e.onComplete()
+                        e.onError(Error("Note not found"))
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.d("FIREBASE", databaseError.toString())
+                    e.onError(Error("Database error"))
                 }
             })
         }
@@ -103,12 +97,12 @@ class FirebaseDatabaseService private constructor() : DatabaseSource {
                         val notes = ArrayList<Note>()
                         for (postSnapshot in snapshot.children) {
                             Log.d("FIREBASE", "onDataChange: " + postSnapshot.toString())
-                            val n = postSnapshot.getValue(Note::class.java)
+                            val n = postSnapshot.getValue(Note::class.java) as Note
                             notes.add(n)
                         }
                         e.onSuccess(notes)
                     } else {
-                        e.onComplete()
+                        e.onError(Error("Notes not found"))
                     }
                 }
 

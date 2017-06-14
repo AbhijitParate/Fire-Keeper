@@ -30,24 +30,19 @@ import com.github.abhijitpparate.keeps.data.database.Note.NoteColor.WHITE
 import com.github.abhijitpparate.keeps.data.database.Note.NoteColor.YELLOW
 import com.github.abhijitpparate.keeps.utils.Utils.getNoteColor
 
-class NotePresenter(private val view: NoteContract.View) : NoteContract.Presenter {
+class NotePresenter(private var view: NoteContract.View) : NoteContract.Presenter {
 
-    private val schedulerProvider: SchedulerProvider
-    private val disposable: CompositeDisposable
+    private var schedulerProvider: SchedulerProvider = SchedulerInjector.scheduler
+    private var disposable: CompositeDisposable = CompositeDisposable()
+    private var authSource: AuthSource = AuthInjector.authSource
+    private var databaseSource: DatabaseSource = DatabaseInjector.databaseSource
 
-    private val authSource: AuthSource = AuthInjector.authSource
-    private val databaseSource: DatabaseSource = DatabaseInjector.databaseSource
-
-    private var currentUser: User? = null
+    lateinit var currentUser: User
     private var currentNote: Note? = null
 
     private var isOptionsOpen = false
 
     init {
-
-        this.schedulerProvider = SchedulerInjector.scheduler
-        this.disposable = CompositeDisposable()
-
         view.setPresenter(this)
     }
 
@@ -55,7 +50,7 @@ class NotePresenter(private val view: NoteContract.View) : NoteContract.Presente
         assembleNote()
         disposable.add(
                 databaseSource
-                        .createOrUpdateNote(currentUser!!.uid.toString(), currentNote!!)
+                        .createOrUpdateNote(currentUser.uid.toString(), currentNote!!)
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
                         .subscribeWith(
@@ -75,7 +70,7 @@ class NotePresenter(private val view: NoteContract.View) : NoteContract.Presente
     private fun assembleNote(): Note {
         if (currentNote == null) currentNote = Note()
 
-        if (currentNote!!.noteId != view.noteId) {
+        if (currentNote!!.noteId != view.noteUuid) {
             currentNote = Note()
         }
 
@@ -91,7 +86,7 @@ class NotePresenter(private val view: NoteContract.View) : NoteContract.Presente
         view.showProgressbar(true)
         disposable.add(
                 databaseSource
-                        .getNoteFromId(currentUser!!.uid.toString(), noteId)
+                        .getNoteFromId(currentUser.uid.toString(), noteId)
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
                         .subscribeWith(
@@ -131,22 +126,20 @@ class NotePresenter(private val view: NoteContract.View) : NoteContract.Presente
         //        Log.d(TAG, "getUserData: ");
         disposable.add(
                 authSource
-                        .user
+                        .retrieveUser()
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
                         .subscribeWith(object : DisposableMaybeObserver<User>() {
                             override fun onSuccess(@NonNull user: User) {
                                 currentUser = user
-                                //                                Log.d(TAG, "onSuccess: ");
                                 view.loadNoteIfAvailable()
                             }
 
                             override fun onError(@NonNull e: Throwable) {
-                                //                                Log.d(TAG, "onError: ");
+
                             }
 
                             override fun onComplete() {
-                                //                                Log.d(TAG, "onComplete: ");
                             }
                         })
         )
@@ -183,7 +176,7 @@ class NotePresenter(private val view: NoteContract.View) : NoteContract.Presente
         toggleOptionsPanel()
     }
 
-    private fun toggleOptionsPanel() {
+    fun toggleOptionsPanel() {
         if (isOptionsOpen) {
             view.hideOptionsPanel()
         } else {
@@ -216,11 +209,11 @@ class NotePresenter(private val view: NoteContract.View) : NoteContract.Presente
         Log.d(TAG, "onColorSelected: " + color)
         when (color) {
             NoteContract.NoteColor.WHITE -> view.setNoteColor(android.R.color.white, WHITE)
-            NoteContract.NoteColor.RED -> view.setNoteColor(android.R.color.holo_red_light, RED)
-            NoteContract.NoteColor.GREEN -> view.setNoteColor(android.R.color.holo_green_light, GREEN)
-            NoteContract.NoteColor.YELLOW -> view.setNoteColor(android.R.color.holo_orange_light, YELLOW)
-            NoteContract.NoteColor.BLUE -> view.setNoteColor(android.R.color.holo_blue_bright, BLUE)
-            NoteContract.NoteColor.ORANGE -> view.setNoteColor(android.R.color.holo_orange_dark, ORANGE)
+            NoteContract.NoteColor.RED -> view.setNoteColor(R.color.noteColorRed, RED)
+            NoteContract.NoteColor.GREEN -> view.setNoteColor(R.color.noteColorGreen, GREEN)
+            NoteContract.NoteColor.YELLOW -> view.setNoteColor(R.color.noteColorYellow, YELLOW)
+            NoteContract.NoteColor.BLUE -> view.setNoteColor(R.color.noteColorBlue, BLUE)
+            NoteContract.NoteColor.ORANGE -> view.setNoteColor(R.color.noteColorOrange, ORANGE)
             else -> view.setNoteColor(R.color.colorBackground, DEFAULT)
         }
     }
@@ -232,13 +225,13 @@ class NotePresenter(private val view: NoteContract.View) : NoteContract.Presente
         @JvmStatic var colorMap: MutableMap<String, Int> = HashMap()
 
         init {
-            colorMap.put(DEFAULT, R.color.colorBackground)
-            colorMap.put(WHITE, android.R.color.white)
-            colorMap.put(RED, android.R.color.holo_red_light)
-            colorMap.put(GREEN, android.R.color.holo_green_light)
-            colorMap.put(YELLOW, android.R.color.holo_orange_light)
-            colorMap.put(BLUE, android.R.color.holo_blue_bright)
-            colorMap.put(ORANGE, android.R.color.holo_orange_dark)
+            colorMap.put(DEFAULT,   R.color.colorBackground)
+            colorMap.put(WHITE,     android.R.color.white)
+            colorMap.put(RED,       R.color.noteColorRed)
+            colorMap.put(GREEN,     R.color.noteColorGreen)
+            colorMap.put(YELLOW,    R.color.noteColorYellow)
+            colorMap.put(BLUE,      R.color.noteColorBlue)
+            colorMap.put(ORANGE,    R.color.noteColorOrange)
         }
     }
 }
