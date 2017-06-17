@@ -1,0 +1,111 @@
+apply plugin: 'com.android.application'
+
+android {
+
+//    sourceSets {
+//        main {
+//            manifest.srcFile 'src/main/AndroidManifest.xml'
+//        }
+//    }
+
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.github.abhijitpparate.keeper"
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "color"
+
+    productFlavors {
+        //Mock build
+        mock {
+            applicationIdSuffix = ".mock"
+            dimension "color"
+        }
+
+        // Production build
+        dev {
+            applicationIdSuffix = ".dev"
+            dimension "color"
+        }
+
+        // Production build
+        prod {
+            applicationIdSuffix = ".prod"
+            dimension "color"
+        }
+    }
+
+    android.variantFilter {
+        variant ->
+            if (variant.buildType.name == 'release' &&
+                    variant.getFlavors().get(0).name == 'mock') {
+                variant.setIgnore(true)
+            }
+    }
+
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+
+    compile 'com.google.firebase:firebase-auth:11.0.1'
+    compile 'com.google.firebase:firebase-database:11.0.1'
+    compile 'com.google.firebase:firebase-core:11.0.1'
+
+    compile 'com.google.android.gms:play-services-auth:11.0.1'
+    compile 'com.google.android.gms:play-services-places:11.0.1'
+
+    compile 'com.github.abhijitpparate.checklistview:checklistview:1.1.0'
+
+    compile 'com.facebook.android:facebook-android-sdk:4.23.0'
+    compile('com.twitter.sdk.android:twitter:3.0.0@aar') {
+        transitive = true
+    }
+
+//    compile project(':checklistview')
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+}
+
+apply plugin: 'com.google.gms.google-services'

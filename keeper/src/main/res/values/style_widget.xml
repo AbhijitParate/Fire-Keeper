@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Labels-->
+    <style name="Label" >
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="Label.Build" parent="Label">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">.86</item>
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:textSize">8sp</item>
+        <item name="android:gravity">end</item>
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+
+    <style name="Label.Header" parent="Label">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">.86</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">48sp</item>
+    </style>
+
+    <style name="Label.InputLabel" parent="Label">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">.86</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--Inputs-->
+    <style name="InputField" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:colorAccent" tools:targetApi="lollipop">@color/colorPrimary</item>
+    </style>
+
+    <style name="InputField.Credentials" parent="InputField">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:layout_marginLeft">64dp</item>
+        <item name="android:layout_marginRight">64dp</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:textColorHint">@color/inputHintColor</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/colorAccent</item>
+    </style>
+
+    <style name="InputField.Credentials.Name">
+        <item name="android:inputType">textPersonName</item>
+    </style>
+
+    <style name="InputField.Credentials.Email" parent="InputField.Credentials">
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="InputField.Credentials.Password" parent="InputField.Credentials">
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <!--Button-->
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="Button.Flat" parent="Button">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">gravity</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="Button.Flat.Social" parent="Button">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Button.Flat.Google" parent="Button.Flat.Social">
+        <item name="android:background">@android:color/holo_red_light</item>
+    </style>
+
+    <style name="Button.Flat.Facebook" parent="Button.Flat.Social">
+        <item name="android:background">@android:color/holo_blue_light</item>
+    </style>
+
+    <style name="Button.Flat.Twitter" parent="Button.Flat.Social">
+        <item name="android:background">@android:color/holo_blue_bright</item>
+    </style>
+
+    <style name="Button.Action" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:scaleType">centerInside</item>
+        <!--<item name="android:background">@drawable/new_note_background</item>-->
+    </style>
+
+    <style name="NoteOptions"/>
+
+    <!--RadioButton-->
+    <style name="NoteOptions.RadioButton" />
+
+    <style name="NoteOptions.RadioButton.NoteColor" parent="NoteOptions.RadioButton">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:button">@android:color/transparent</item>
+    </style>
+
+    <style name="NoteOptions.Icon" parent="NoteOptions">
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+    </style>
+
+    <style name="NoteOptions.Text" parent="NoteOptions">
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Small</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+    </style>
+
+    <style name="NoteOptions.Item" parent="NoteOptions">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="NoteOptions.Item.Color" parent="NoteOptions">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!--CardView-->
+    <style name="CardView.Notes" parent="CardView">
+        <item name="cardBackgroundColor">@color/colorBackground</item>
+        <!--<item name="android:foreground">?android:attr/selectableItemBackground</item>-->
+        <item name="android:clickable">true</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+    <style name="Notes" parent="CardView.Notes"/>
+
+    <style name="Notes.Title" parent="Notes" >
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxHeight">24dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Notes.Body" parent="Notes" >
+        <item name="android:textColor">@color/normalTextColor</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:maxHeight">128dp</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Notes.Date" parent="Notes" >
+        <item name="android:textColor">@color/smallTextColor</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+
+
+</resources>

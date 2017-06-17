@@ -16,7 +16,7 @@ import org.json.JSONException;
 
 import java.util.List;
 
-public class CheckListView extends RelativeLayout implements CheckListAdapter.OnStartDragListener {
+public class CheckListView extends RelativeLayout implements CheckListAdapter.OnStartDragListener  {
 
     public static final String TAG = "CheckListView";
 
