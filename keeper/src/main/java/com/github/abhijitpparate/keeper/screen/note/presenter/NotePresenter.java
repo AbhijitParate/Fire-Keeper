@@ -103,7 +103,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void loadNote(final String noteId) {
-        Log.d(TAG, "loadNote: ");
+//        Log.d(TAG, "loadNote: ");
         view.showProgressbar(true);
         disposable.add(
                 databaseSource

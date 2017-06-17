@@ -56,7 +56,7 @@ public class NotePresenterTest {
 
     @Test
     public void onChecklistClick(){
-        presenter.onDrawingClick();
+        presenter.onChecklistClick(true);
         verify(view).switchToChecklist();
     }
 

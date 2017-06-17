@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Keeps.iml" filepath="$PROJECT_DIR$/Keeps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Keeper.iml" filepath="$PROJECT_DIR$/Keeper.iml" />
       <module fileurl="file://$PROJECT_DIR$/keeper/keeper.iml" filepath="$PROJECT_DIR$/keeper/keeper.iml" />
     </modules>
   </component>
