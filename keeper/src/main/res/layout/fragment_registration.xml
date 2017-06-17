@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:background="@color/colorBackground"
-    tools:context="com.github.abhijitpparate.keeps.screen.login.fragments.RegistrationFragment">
+    tools:context="com.github.abhijitpparate.keeper.com.github.abhijitpparate.keeper.screen.login.fragments.RegistrationFragment">
 
     <TextView
         android:id="@+id/tvHeader"

@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "421756040444",
-    "firebase_url": "https://keeps-c28f0.firebaseio.com",
-    "project_id": "keeps-c28f0",
-    "storage_bucket": "keeps-c28f0.appspot.com"
+    "project_number": "381881892475",
+    "firebase_url": "https://keeper-1ef80.firebaseio.com",
+    "project_id": "keeper-1ef80",
+    "storage_bucket": "keeper-1ef80.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:421756040444:android:5d108854c9c72ac5",
+        "mobilesdk_app_id": "1:381881892475:android:22e0e0755b735784",
         "android_client_info": {
-          "package_name": "com.github.abhijitpparate.keeps"
+          "package_name": "com.github.abhijitpparate.keeper.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "421756040444-5q0g1jg57q3hqqg0ji03sfq05akhcnlu.apps.googleusercontent.com",
+          "client_id": "381881892475-6jarmeuhnf3qge5hkfu80t9n9ubgt37j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.abhijitpparate.keeper.dev",
+            "certificate_hash": "55b53e7f53f8c4debf475bd83e1ae6f6b275bab4"
+          }
+        },
+        {
+          "client_id": "381881892475-48hkgri2o71gg8hrvjeq0hnvlgr9bodl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC9IhxNhH-mmb2q_KZEwmfe-upZ6hWBMlo"
+          "current_key": "AIzaSyDE71wI-WtfANe51AbmJNR1AXGtGUXgOb0"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381881892475-48hkgri2o71gg8hrvjeq0hnvlgr9bodl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -39,20 +52,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:421756040444:android:9b51f9df38b53348",
+        "mobilesdk_app_id": "1:381881892475:android:04bc9fea900c60fb",
         "android_client_info": {
-          "package_name": "com.github.abhijitpparate.keeps.mock"
+          "package_name": "com.github.abhijitpparate.keeper.mock"
         }
       },
       "oauth_client": [
         {
-          "client_id": "421756040444-5q0g1jg57q3hqqg0ji03sfq05akhcnlu.apps.googleusercontent.com",
+          "client_id": "381881892475-48hkgri2o71gg8hrvjeq0hnvlgr9bodl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC9IhxNhH-mmb2q_KZEwmfe-upZ6hWBMlo"
+          "current_key": "AIzaSyDE71wI-WtfANe51AbmJNR1AXGtGUXgOb0"
         }
       ],
       "services": {

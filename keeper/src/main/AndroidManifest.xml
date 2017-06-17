@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.abhijitpparate.keeps">
+    package="com.github.abhijitpparate.keeper">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_keeper"
         android:supportsRtl="true">
         <activity
-            android:name=".screen.login.LoginActivity"
+            android:name="com.github.abhijitpparate.keeper.screen.login.LoginActivity"
             android:theme="@style/KeepTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,17 +25,17 @@
         </activity>
 
         <activity
-            android:name=".screen.home.HomeActivity"
+            android:name="com.github.abhijitpparate.keeper.screen.home.HomeActivity"
             android:theme="@style/KeepTheme.NoActionBar"/>
 
         <activity
-            android:parentActivityName=".screen.home.HomeActivity"
-            android:name=".screen.note.NoteActivity"
+            android:parentActivityName="com.github.abhijitpparate.keeper.screen.home.HomeActivity"
+            android:name="com.github.abhijitpparate.keeper.screen.note.NoteActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/KeepTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".screen.home.HomeActivity" />
+                android:value="com.github.abhijitpparate.keeper.screen.home.HomeActivity" />
         </activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"

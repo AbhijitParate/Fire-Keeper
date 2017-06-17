@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Keeps.iml" filepath="$PROJECT_DIR$/Keeps.iml" />
-      <module fileurl="file://$PROJECT_DIR$/checklistview/checklistview.iml" filepath="$PROJECT_DIR$/checklistview/checklistview.iml" />
       <module fileurl="file://$PROJECT_DIR$/keeper/keeper.iml" filepath="$PROJECT_DIR$/keeper/keeper.iml" />
-      <module fileurl="file://$PROJECT_DIR$/testapp/testapp.iml" filepath="$PROJECT_DIR$/testapp/testapp.iml" />
     </modules>
   </component>
 </project>

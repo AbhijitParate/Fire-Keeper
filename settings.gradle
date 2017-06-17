@@ -1,1 +1,1 @@
-include ':keeper', ':checklistview', ':testapp'
+include ':keeper'
