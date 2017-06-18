@@ -1,6 +1,8 @@
 package com.github.abhijitpparate.keeper.data.database;
 
 
+import com.github.abhijitpparate.keeper.data.storage.File;
+
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -15,6 +17,7 @@ public class Note {
     private String checklist;
     private String color;
     private Place place;
+    private File file;
 
     public static class NoteColor {
         public static final String DEFAULT = "DEFAULT";
@@ -116,6 +119,14 @@ public class Note {
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public static class Place {

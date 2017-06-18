@@ -1,11 +1,13 @@
 package com.github.abhijitpparate.keeper.screen.note.presenter;
 
 
+import android.net.Uri;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 
 import com.github.abhijitpparate.checklistview.CheckListItem;
 import com.github.abhijitpparate.keeper.data.database.Note;
+import com.github.abhijitpparate.keeper.data.storage.File;
 import com.google.android.gms.location.places.Place;
 
 import java.util.List;
@@ -22,19 +24,22 @@ public interface NoteContract {
         String getNoteTitle();
         String getNoteBody();
         String getCheckList();
-        String getNoteColor();
-        Note.Place getNotePlace();
+//        String getNoteColor();
+//        Note.Place getNotePlace();
+//        File getFile();
 
-        void setNote(Note notes);
+//        void setNote(Note notes);
         void setNoteTitle(String title);
         void setNoteBody(String body);
         void setNoteChecklist(List<CheckListItem> checklist);
         void setNoteColor(@ColorRes int colorInt, String colorString);
         void setNotePlace(Note.Place place);
+        void setNoteFile(File file);
 
         void showOptionsPanel();
         void hideOptionsPanel();
         void showPlacePicker();
+        void showFilePicker();
 
         void showHomeScreen();
 
@@ -47,6 +52,7 @@ public interface NoteContract {
 
         void switchToChecklist();
         void switchToText();
+
     }
 
     interface Presenter {
@@ -71,5 +77,6 @@ public interface NoteContract {
         void onLabelClick();
         void onColorSelected(NoteColor color);
         void onPlaceSelected(Place place);
+        void onFileSelected(File file, Uri uri);
     }
 }

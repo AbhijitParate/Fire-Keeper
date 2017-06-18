@@ -1,12 +1,16 @@
 package com.github.abhijitpparate.keeper.screen.note.presenter;
 
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.github.abhijitpparate.keeper.data.auth.AuthSource;
 import com.github.abhijitpparate.keeper.data.auth.User;
 import com.github.abhijitpparate.keeper.data.database.DatabaseSource;
 import com.github.abhijitpparate.keeper.data.database.Note;
+import com.github.abhijitpparate.keeper.data.storage.File;
+import com.github.abhijitpparate.keeper.data.storage.StorageInjector;
+import com.github.abhijitpparate.keeper.data.storage.StorageSource;
 import com.github.abhijitpparate.keeper.scheduler.SchedulerProvider;
 import com.github.abhijitpparate.keeper.utils.Utils;
 import com.github.abhijitpparate.keeper.R;
@@ -43,9 +47,11 @@ public class NotePresenter implements NoteContract.Presenter {
 
     private AuthSource authSource;
     private DatabaseSource databaseSource;
+    private StorageSource storageSource;
 
     private User currentUser;
     private Note currentNote;
+    private Uri tempFileUri;
 
     private NoteContract.View view;
 
@@ -56,49 +62,92 @@ public class NotePresenter implements NoteContract.Presenter {
 
         this.authSource = AuthInjector.getAuthSource();
         this.databaseSource = DatabaseInjector.getDatabaseSource();
+        this.storageSource = StorageInjector.getStorageSource();
+
         this.schedulerProvider = SchedulerInjector.getScheduler();
         this.disposable = new CompositeDisposable();
+        this.currentNote = Note.newNote();
 
         view.setPresenter(this);
+    }
+
+    private Note assembleNote() {
+//        if (currentNote == null) currentNote = Note.newNote();
+
+//        if (!currentNote.getNoteId().equals(view.getNoteId())) {
+//            currentNote = Note.newNote();
+//        }
+
+        currentNote.setTitle(view.getNoteTitle());
+        currentNote.setBody(view.getNoteBody());
+        currentNote.setChecklist(view.getCheckList());
+//        currentNote.setColor(view.getNoteColor());
+//        currentNote.setPlace(view.getNotePlace());
+//        currentNote.setFile(view.getFile());
+        return currentNote;
     }
 
     @Override
     public void onSaveClick() {
         Note note = assembleNote();
-        disposable.add(
-            databaseSource
-                    .createOrUpdateNote(currentUser.getUid(), note)
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .subscribeWith(
-                            new DisposableCompletableObserver() {
-                                @Override
-                                public void onComplete() {
-                                    view.showHomeScreen();
-                                }
+        if (tempFileUri != null){
+            saveFile(note);
+        } else
+            saveNote(note);
+    }
 
-                                @Override
-                                public void onError(Throwable e) {
-                                    view.makeToast(e.getMessage());
-                                }
+    public void saveFile(final Note note){
+        disposable.add(
+                storageSource
+                        .createFile(currentUser.getUid(), note.getFile().getName(), note.getFile().getType(), tempFileUri)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribeWith(new DisposableMaybeObserver<File>(){
+
+                            @Override
+                            public void onSuccess(File file) {
+                                Log.d(TAG, "onSuccess: ");
+                                note.setFile(file);
+                                saveNote(note);
                             }
-                    )
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(TAG, "onError: ");
+                                view.makeToast(e.getMessage());
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.d(TAG, "onComplete: ");
+                                tempFileUri = null;
+                                view.makeToast("onComplete");
+                            }
+                        })
         );
     }
 
-    private Note assembleNote() {
-        if (currentNote == null) currentNote = Note.newNote();
+    public void saveNote(Note note){
+        Log.d(TAG, "saveNote: ");
+        disposable.add(
+                databaseSource
+                        .createOrUpdateNote(currentUser.getUid(), note)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribeWith(
+                                new DisposableCompletableObserver() {
+                                    @Override
+                                    public void onComplete() {
+                                        view.showHomeScreen();
+                                    }
 
-        if (!currentNote.getNoteId().equals(view.getNoteId())) {
-            currentNote = Note.newNote();
-        }
-
-        currentNote.setTitle(view.getNoteTitle());
-        currentNote.setBody(view.getNoteBody());
-        currentNote.setChecklist(view.getCheckList());
-        currentNote.setColor(view.getNoteColor());
-        currentNote.setPlace(view.getNotePlace());
-        return currentNote;
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        view.makeToast(e.getMessage());
+                                    }
+                                }
+                        )
+        );
     }
 
     @Override
@@ -121,7 +170,7 @@ public class NotePresenter implements NoteContract.Presenter {
                                     @Override
                                     public void onSuccess(@NonNull Note note) {
                                         NotePresenter.this.currentNote = note;
-                                        view.setNote(note);
+//                                        view.setNote(note);
 
                                         view.setNoteTitle(note.getTitle());
 
@@ -136,6 +185,10 @@ public class NotePresenter implements NoteContract.Presenter {
 
                                         if (note.getPlace() != null && note.getPlace().getLocation() != null) {
                                             view.setNotePlace(note.getPlace());
+                                        }
+
+                                        if (note.getFile() != null) {
+                                            view.setNoteFile(note.getFile());
                                         }
 
                                         view.showProgressbar(false);
@@ -216,7 +269,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void onImageClick() {
-
+        view.showFilePicker();
     }
 
     @Override
@@ -291,5 +344,11 @@ public class NotePresenter implements NoteContract.Presenter {
         p.setName(place.getName().toString());
         p.setLocation(new Note.Place.LatLng(place.getLatLng().latitude, place.getLatLng().longitude));
         view.setNotePlace(p);
+    }
+
+    @Override
+    public void onFileSelected(File file, Uri uri) {
+        this.tempFileUri = uri;
+        this.currentNote.setFile(file);
     }
 }

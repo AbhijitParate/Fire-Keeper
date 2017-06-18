@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -27,15 +29,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.bumptech.glide.Glide;
 import com.github.abhijitpparate.checklistview.CheckListItem;
 import com.github.abhijitpparate.checklistview.CheckListView;
+import com.github.abhijitpparate.keeper.R;
 import com.github.abhijitpparate.keeper.data.database.Note;
+import com.github.abhijitpparate.keeper.data.storage.File;
 import com.github.abhijitpparate.keeper.screen.home.HomeActivity;
 import com.github.abhijitpparate.keeper.screen.home.presenter.HomeContract;
 import com.github.abhijitpparate.keeper.screen.note.presenter.NoteContract;
 import com.github.abhijitpparate.keeper.screen.note.presenter.NotePresenter;
+import com.github.abhijitpparate.keeper.utils.FileUtils;
 import com.github.abhijitpparate.keeper.utils.PermissionUtils;
-import com.github.abhijitpparate.keeper.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -60,6 +65,7 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     public static final String TAG = "NoteActivity";
 
     private static final int PLACE_PICKER_REQUEST = 123;
+    private static final int FILE_PICKER_REQUEST = 527;
     private static final int PERMISSIONS_ACCESS_FINE_LOCATION = 978;
     public static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -77,6 +83,9 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
 
     @BindView(R.id.checkListView)
     CheckListView checkListView;
+
+    @BindView(R.id.ivImage)
+    ImageView ivImage;
 
     @BindView(R.id.mvPlace)
     MapView mvPlace;
@@ -127,8 +136,6 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
 
     HomeContract.NoteType noteType = HomeContract.NoteType.TEXT;
     String noteId;
-
-    private Note currentNote = Note.newNote();
 
     Animation slideDown;
 
@@ -296,9 +303,22 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PLACE_PICKER_REQUEST && resultCode == Activity.RESULT_OK){
-            Place selection = PlacePicker.getPlace(this, data);
-            presenter.onPlaceSelected(selection);
+        if (resultCode == Activity.RESULT_OK){
+            switch (requestCode){
+                case PLACE_PICKER_REQUEST:
+                    Place selection = PlacePicker.getPlace(this, data);
+                    presenter.onPlaceSelected(selection);
+                    break;
+                case FILE_PICKER_REQUEST:
+                    Uri uri = data.getData();
+                    if (uri != null){
+                        File file = FileUtils.getFile(this, File.Type.IMAGE, uri);
+                        Log.e(TAG, "onActivityResult: " + file.getName());
+                        presenter.onFileSelected(file, uri);
+                        setImage(uri);
+                    }
+                    break;
+            }
         }
     }
 
@@ -322,20 +342,26 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         return checkListView.getCheckListAsString();
     }
 
-    @Override
-    public String getNoteColor() {
-        return currentNote.getColor();
-    }
+//    @Override
+//    public String getNoteColor() {
+//        return findViewById(actionNoteColor.getCheckedRadioButtonId()).getTag().toString();
+//    }
+//
+//    @Override
+//    public Note.Place getNotePlace() {
+//        mvPlace.getMapAsync();
+//        return currentNote.getPlace();
+//    }
+//
+//    @Override
+//    public File getFile() {
+//        return currentNote.getFile();
+//    }
 
-    @Override
-    public Note.Place getNotePlace() {
-        return currentNote.getPlace();
-    }
-
-    @Override
-    public void setNote(Note note) {
-        currentNote = note;
-    }
+//    @Override
+//    public void setNote(Note note) {
+//        currentNote = note;
+//    }
 
     @Override
     public void setNoteTitle(String title) {
@@ -360,13 +386,13 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         clNote.setBackgroundColor(c);
         rlNewNote.setBackgroundColor(c);
         actionNoteColor.check(actionNoteColor.findViewWithTag(colorString.toLowerCase()).getId());
-        currentNote.setColor(colorString);
+//        currentNote.setColor(colorString);
     }
 
     @Override
     public void setNotePlace(final Note.Place place) {
         makeToast(place.getName());
-        currentNote.setPlace(place);
+//        currentNote.setPlace(place);
         mvPlace.setVisibility(View.VISIBLE);
         mvPlace.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -383,6 +409,22 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
                 googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
+    }
+
+    @Override
+    public void setNoteFile(File file) {
+        makeToast(file.getName() + " received");
+        Glide.with(this)
+                .load(file.getUrl())
+                .into(ivImage);
+        ivImage.setVisibility(View.VISIBLE);
+    }
+
+    public void setImage(Uri uri){
+        Glide.with(this)
+                .load(uri)
+                .into(ivImage);
+        ivImage.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -407,6 +449,13 @@ public class NoteActivity extends AppCompatActivity implements NoteContract.View
         } else {
             requestLocationPermission();
         }
+    }
+
+    @Override
+    public void showFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_PICKER_REQUEST);
     }
 
     @Override

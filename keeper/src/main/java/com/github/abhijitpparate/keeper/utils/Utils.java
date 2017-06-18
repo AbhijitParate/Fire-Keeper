@@ -1,6 +1,14 @@
 package com.github.abhijitpparate.keeper.utils;
 
 
+import android.content.Context;
+import android.content.CursorLoader;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.provider.SyncStateContract;
+import android.util.Log;
+
 import com.github.abhijitpparate.checklistview.CheckListItem;
 import com.github.abhijitpparate.keeper.data.database.Note;
 import com.github.abhijitpparate.keeper.R;
@@ -10,6 +18,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,5 +68,37 @@ public class Utils {
             }
         }
         return Note.NoteColor.DEFAULT;
+    }
+
+    public static String getPath(Context context, Uri uri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(context, uri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
+
+    public static void readFile(Context context, Uri uri){
+        InputStream inputStream = null;
+        try {
+            inputStream = context.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                inputStream));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("Utils", "readFile: " + stringBuilder.toString());
     }
 }

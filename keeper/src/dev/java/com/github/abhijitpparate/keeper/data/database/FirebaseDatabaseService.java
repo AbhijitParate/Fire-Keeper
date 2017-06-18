@@ -168,6 +168,33 @@ public class FirebaseDatabaseService implements DatabaseSource {
     }
 
     @Override
+    public Completable deleteNote(final String uid, final String noteId) {
+        return Completable.create(
+                new CompletableOnSubscribe() {
+                    @Override
+                    public void subscribe(final CompletableEmitter emitter) throws Exception {
+                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        rootRef.child(USERS)
+                                .child(uid)
+                                .child(NOTES)
+                                .child(noteId)
+                                .setValue(null)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            emitter.onComplete();
+                                        } else {
+                                            emitter.onError(task.getException());
+                                        }
+                                    }
+                                });
+                    }
+                }
+        );
+    }
+
+    @Override
     public Completable createOrUpdateNote(final String uid, final Note note) {
         return Completable.create(
                 new CompletableOnSubscribe() {
