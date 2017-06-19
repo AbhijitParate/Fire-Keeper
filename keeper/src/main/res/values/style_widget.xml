@@ -16,10 +16,14 @@
     </style>
 
     <style name="Label.Header" parent="Label">
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:alpha">.86</item>
+        <!--<item name="android:fontFamily">sans-serif</item>-->
         <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">48sp</item>
+        <item name="android:textSize">64sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Label.InputLabel" parent="Label">
@@ -71,24 +75,48 @@
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">gravity</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">24sp</item>
         <item name="android:layout_marginTop">8dp</item>
     </style>
 
-    <style name="Button.Flat.Social" parent="Button">
+    <style name="Button.Flat.Login" parent="Button.Flat">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Button.Flat.Register" parent="Button.Flat">
+        <item name="android:background">@drawable/bg_card_selected</item>
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Button.Flat.Social" parent="Button">
+        <!--<item name="android:textSize">16sp</item>-->
+        <!--<item name="android:layout_marginTop">8dp</item>-->
+        <!--<item name="android:layout_marginBottom">8dp</item>-->
+        <item name="android:layout_weight">1</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_width">96dp</item>
+        <item name="android:layout_height">96dp</item>
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
     <style name="Button.Flat.Google" parent="Button.Flat.Social">
-        <item name="android:background">@android:color/holo_red_light</item>
+        <!--<item name="android:background">@android:color/holo_red_light</item>-->
+        <item name="android:contentDescription">@string/sign_in_with_google</item>
+        <item name="android:src">@mipmap/ic_google</item>
     </style>
 
     <style name="Button.Flat.Facebook" parent="Button.Flat.Social">
-        <item name="android:background">@android:color/holo_blue_light</item>
+        <!--<item name="android:background">@android:color/holo_blue_light</item>-->
+        <item name="android:contentDescription">@string/sign_in_with_facebook</item>
+        <item name="android:src">@mipmap/ic_facebook</item>
     </style>
 
     <style name="Button.Flat.Twitter" parent="Button.Flat.Social">
-        <item name="android:background">@android:color/holo_blue_bright</item>
+        <!--<item name="android:background">@android:color/holo_blue_bright</item>-->
+        <item name="android:contentDescription">@string/sign_in_with_twitter</item>
+        <item name="android:src">@mipmap/ic_twitter</item>
     </style>
 
     <style name="Button.Action" parent="Widget.AppCompat.ImageButton">

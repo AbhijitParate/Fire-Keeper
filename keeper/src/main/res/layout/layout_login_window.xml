@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/fragment_login">
+
+    <TextView
+        android:id="@+id/tvEmail"
+        style="@style/Label.InputLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvHeader"
+        android:gravity="center_horizontal"
+        android:text="E-mail"
+        app:layout_constraintLeft_toLeftOf="@+id/tvHeader"
+        app:layout_constraintRight_toRightOf="@+id/tvHeader"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/edtEmail"
+        style="@style/InputField.Credentials.Email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvEmail"
+        android:gravity="center_horizontal"
+        android:hint="example@email.com"
+        android:inputType="textEmailAddress"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+    <TextView
+        android:id="@+id/tvPassword"
+        style="@style/Label.InputLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edtEmail"
+        android:gravity="center_horizontal"
+        android:text="Password"
+        app:layout_constraintLeft_toLeftOf="@+id/edtEmail"
+        app:layout_constraintRight_toRightOf="@+id/edtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        style="@style/InputField.Credentials.Email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPassword"
+        android:gravity="center_horizontal"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        style="@style/Button.Flat.Login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edtPassword"
+        android:text="Log in"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llSocialLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin">
+
+        <ImageButton
+            android:id="@+id/btnLoginGoogle"
+            style="@style/Button.Flat.Google"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/btnLoginFacebook"
+            style="@style/Button.Flat.Facebook"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/btnLoginTwitter"
+            style="@style/Button.Flat.Twitter"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnRegister"
+        style="@style/Button.Flat.Register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:text="@string/create_free_account"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llSocialLogin"
+        tools:layout_editor_absoluteY="248dp" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btnLoginFacebookGone"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/btnLoginTwitterGone"
+        style="@style/Button.Flat"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="361dp"
+        tools:layout_editor_absoluteY="522dp" />
+</merge>

@@ -15,5 +15,9 @@
 
     <string name="twitter_consumer_key" translatable="false">FVtPUsSJ8061iyjfLpEJaJG9n</string>
     <string name="twitter_consumer_secret" translatable="false">o5ne5ojvIqTqoktYgTJI9MsI4wCX1KPH4KM5ETI3ifIm1wT1WX</string>
+    <string name="sign_in_with_google">Sign In with google</string>
+    <string name="sign_in_with_facebook">Sign In with Facebook</string>
+    <string name="sign_in_with_twitter">Sign In with Twitter</string>
+    <string name="create_free_account">Create Free Account</string>
 
 </resources>
