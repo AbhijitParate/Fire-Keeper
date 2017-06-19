@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:showIn="@layout/fragment_registration">
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/Label.InputLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Name"
+        android:textAlignment="center"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/tvHeader"
+        app:layout_constraintRight_toRightOf="@+id/tvHeader"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
+
+    <EditText
+        android:id="@+id/edtName"
+        style="@style/InputField.Credentials.Name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center_horizontal"
+        android:hint="Name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        style="@style/Label.InputLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="E-mail"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@+id/edtName"
+        app:layout_constraintRight_toRightOf="@+id/edtName"
+        app:layout_constraintTop_toBottomOf="@+id/edtName" />
+
+    <EditText
+        android:id="@+id/edtEmail"
+        style="@style/InputField.Credentials.Email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:hint="E-mail"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+    <TextView
+        android:id="@+id/tvPassword"
+        style="@style/Label.InputLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@+id/edtEmail"
+        app:layout_constraintRight_toRightOf="@+id/edtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        style="@style/InputField.Credentials.Password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:hint="Password"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
+
+    <TextView
+        android:id="@+id/tvPasswordConfirm"
+        style="@style/Label.InputLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Confirm Password"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@+id/edtPassword"
+        app:layout_constraintRight_toRightOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+
+    <EditText
+        android:id="@+id/edtPasswordConfirm"
+        style="@style/InputField.Credentials.Password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:hint="Retype Password"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPasswordConfirm" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        style="@style/Button.Flat.Login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Create Account"
+        app:layout_constraintLeft_toLeftOf="@+id/edtPasswordConfirm"
+        app:layout_constraintRight_toRightOf="@+id/edtPasswordConfirm"
+        app:layout_constraintTop_toBottomOf="@+id/edtPasswordConfirm" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        style="@style/Button.Flat.Register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Login"
+        app:layout_constraintLeft_toLeftOf="@+id/btnRegister"
+        app:layout_constraintRight_toRightOf="@+id/btnRegister"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+</merge>
