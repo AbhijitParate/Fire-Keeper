@@ -19,8 +19,21 @@ import io.reactivex.MaybeOnSubscribe;
 
 public class FirebaseStorageService implements StorageSource {
 
+    private static FirebaseStorage storage;
+
     public static FirebaseStorageService getInstance() {
         return new FirebaseStorageService();
+    }
+
+    private FirebaseStorageService() {
+        storage = getStorage();
+    }
+
+    private FirebaseStorage getStorage() {
+        if (storage == null){
+            storage = FirebaseStorage.getInstance();
+        }
+        return storage;
     }
 
     @Override
@@ -30,7 +43,7 @@ public class FirebaseStorageService implements StorageSource {
                     @Override
                     public void subscribe(final MaybeEmitter<File> emitter) throws Exception {
                         StorageReference root
-                                = FirebaseStorage.getInstance().getReference();
+                                = getStorage().getReference();
 
                         StorageReference fileRef = root.child(uid).child(file.getType()).child(file.getName());
 
@@ -59,7 +72,7 @@ public class FirebaseStorageService implements StorageSource {
                     @Override
                     public void subscribe(final MaybeEmitter<File> emitter) throws Exception {
                         StorageReference root
-                                = FirebaseStorage.getInstance().getReference().child(uid).child(type.toUpperCase()).child(name);
+                                = getStorage().getReference().child(uid).child(type.toUpperCase()).child(name);
 
                         UploadTask uploadTask = root.putFile(uri);
 
@@ -91,8 +104,8 @@ public class FirebaseStorageService implements StorageSource {
                     @Override
                     public void subscribe(final CompletableEmitter emitter) throws Exception {
                         StorageReference root
-                                = FirebaseStorage
-                                .getInstance().getReference()
+                                = getStorage()
+                                .getReference()
                                 .child(uid)
                                 .child(String.valueOf(file.getType()))
                                 .child(file.getName());

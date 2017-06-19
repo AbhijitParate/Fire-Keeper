@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -62,13 +63,13 @@ public class LoginFragment extends Fragment implements
     Button mButtonLogin;
 
     @BindView(R.id.btnLoginGoogle)
-    Button btnLoginGoogle;
+    ImageButton btnLoginGoogle;
 
     @BindView(R.id.btnLoginFacebook)
-    Button btnLoginFacebook;
+    ImageButton btnLoginFacebook;
 
     @BindView(R.id.btnLoginTwitter)
-    Button btnLoginTwitter;
+    ImageButton btnLoginTwitter;
 
     @BindView(R.id.btnLoginFacebookGone)
     LoginButton btnFacebook;
@@ -270,12 +271,10 @@ public class LoginFragment extends Fragment implements
         if (requestCode == RC_GOOGLE_AUTH) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 presenter.registerGoogleAccount(account);
             } else {
-                // Google Sign In failed, update UI appropriately
-                // ...
+                makeToast("Login failed");
             }
         }
     }

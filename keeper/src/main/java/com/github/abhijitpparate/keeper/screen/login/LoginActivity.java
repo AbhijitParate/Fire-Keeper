@@ -1,7 +1,9 @@
 package com.github.abhijitpparate.keeper.screen.login;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -90,5 +92,9 @@ public class LoginActivity extends AppCompatActivity implements ScreenSwitcher {
         finish();
         Intent homeIntent = new Intent(this, HomeActivity.class);
         startActivity(homeIntent);
+    }
+
+    public static Intent getLauncherIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
     }
 }

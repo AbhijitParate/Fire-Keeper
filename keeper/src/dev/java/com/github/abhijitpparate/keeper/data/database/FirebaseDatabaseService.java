@@ -26,12 +26,21 @@ public class FirebaseDatabaseService implements DatabaseSource {
     private static final String USERS = "USERS";
     private static final String NOTES = "NOTES";
 
-    private FirebaseDatabaseService() {
+    private static FirebaseDatabase database;
 
+    private FirebaseDatabaseService() {
+        database = getDatabase();
     }
 
     public static DatabaseSource getInstance() {
         return new FirebaseDatabaseService();
+    }
+
+    public FirebaseDatabase getDatabase(){
+        if (database == null){
+            database = FirebaseDatabase.getInstance();
+        }
+        return database;
     }
 
     @Override
@@ -40,7 +49,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new CompletableOnSubscribe() {
                     @Override
                     public void subscribe(final CompletableEmitter e) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         final DatabaseReference idRef = rootRef.child(USERS).child(profile.getUid());
                         idRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -78,7 +87,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new MaybeOnSubscribe<Profile>() {
                     @Override
                     public void subscribe(final MaybeEmitter<Profile> e) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         DatabaseReference idRef = rootRef.child(USERS).child(uid);
                         idRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             //does this check node for activeUser exists?
@@ -108,7 +117,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new MaybeOnSubscribe<Note>() {
                     @Override
                     public void subscribe(final MaybeEmitter<Note> e) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         DatabaseReference idRef = rootRef.child(USERS).child(uid).child(NOTES).child(noteId);
                         idRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             //does this check node for activeUser exists?
@@ -138,7 +147,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new MaybeOnSubscribe<List<Note>>() {
                     @Override
                     public void subscribe(final MaybeEmitter<List<Note>> e) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         DatabaseReference idRef = rootRef.child(USERS).child(uid).child(NOTES);
                         idRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             //does this check node for activeUser exists?
@@ -173,7 +182,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new CompletableOnSubscribe() {
                     @Override
                     public void subscribe(final CompletableEmitter emitter) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         rootRef.child(USERS)
                                 .child(uid)
                                 .child(NOTES)
@@ -200,7 +209,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new CompletableOnSubscribe() {
                     @Override
                     public void subscribe(@io.reactivex.annotations.NonNull final CompletableEmitter e) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         final DatabaseReference idRef = rootRef.child(USERS).child(uid).child(NOTES).child(note.getNoteId());
                         idRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -234,7 +243,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new CompletableOnSubscribe() {
                     @Override
                     public void subscribe(final CompletableEmitter e) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         rootRef.child(USERS)
                                 .child(uid)
                                 .setValue(null)
@@ -259,7 +268,7 @@ public class FirebaseDatabaseService implements DatabaseSource {
                 new CompletableOnSubscribe() {
                     @Override
                     public void subscribe(final CompletableEmitter e) throws Exception {
-                        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        final DatabaseReference rootRef = getDatabase().getReference();
                         rootRef.child(USERS)
                                 .child(profile.getUid())
                                 .setValue(profile)

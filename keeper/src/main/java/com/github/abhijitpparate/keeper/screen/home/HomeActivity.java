@@ -1,5 +1,6 @@
 package com.github.abhijitpparate.keeper.screen.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
@@ -25,6 +26,7 @@ import com.github.abhijitpparate.keeper.data.database.Note;
 import com.github.abhijitpparate.keeper.data.database.Profile;
 import com.github.abhijitpparate.keeper.screen.home.presenter.HomeContract;
 import com.github.abhijitpparate.keeper.screen.home.presenter.HomePresenter;
+import com.github.abhijitpparate.keeper.screen.landing.LandingActivity;
 import com.github.abhijitpparate.keeper.screen.login.LoginActivity;
 import com.github.abhijitpparate.keeper.screen.note.NoteActivity;
 
@@ -257,5 +259,9 @@ public class HomeActivity extends AppCompatActivity implements HomeContract.View
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
+    }
+
+    public static Intent getLauncherIntent(Context context) {
+        return new Intent(context, HomeActivity.class);
     }
 }

@@ -27,13 +27,13 @@ import io.reactivex.MaybeOnSubscribe;
 
 public class FirebaseAuthService implements AuthSource {
 
-    public static final String TAG = "FirebaseAuthService";
+    private static final String TAG = "FirebaseAuthService";
 
-    private FirebaseAuth auth;
+    private static FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener listener;
 
-    public FirebaseAuthService() {
-        this.auth = FirebaseAuth.getInstance();
+    private FirebaseAuthService() {
+        auth = getAuth();
     }
 
     public FirebaseAuth getAuth(){
@@ -127,10 +127,10 @@ public class FirebaseAuthService implements AuthSource {
                 getAuth().removeAuthStateListener(listener);
                 listener = new FirebaseAuth.AuthStateListener() {
                     @Override
-                    public void onAuthStateChanged(@android.support.annotation.NonNull FirebaseAuth firebaseAuth) {
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         Log.d(TAG, "onAuthStateChanged: ");
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                        auth.removeAuthStateListener(listener);
+                        getAuth().removeAuthStateListener(listener);
                         if (firebaseUser != null){
                             User user = new User(
                                     firebaseUser.getUid(),
@@ -144,7 +144,6 @@ public class FirebaseAuthService implements AuthSource {
                         }
                     }
                 };
-
                 getAuth().addAuthStateListener(listener);
             }
         });
@@ -158,7 +157,7 @@ public class FirebaseAuthService implements AuthSource {
                 listener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@android.support.annotation.NonNull FirebaseAuth firebaseAuth) {
-                        auth.removeAuthStateListener(listener);
+                        getAuth().removeAuthStateListener(listener);
                         if (firebaseAuth.getCurrentUser() == null){
                             e.onComplete();
                         } else {
@@ -220,7 +219,7 @@ public class FirebaseAuthService implements AuthSource {
                 getAuth().signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@android.support.annotation.NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "onComplete: ");
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
@@ -235,6 +234,7 @@ public class FirebaseAuthService implements AuthSource {
                                 e.onComplete();
                                 Log.d(TAG, "signInWithCredential:success");
                             } else {
+                                Log.d(TAG, "signInWithCredential:failed");
                                 e.onError(new Exception("signInWithCredential : failed"));
                             }
 
